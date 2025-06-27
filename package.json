@@ -1,0 +1,27 @@
+{
+  "name": "backend_expressjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matdelp/CodersApp_backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matdelp/CodersApp_backend/issues"
+  },
+  "homepage": "https://github.com/matdelp/CodersApp_backend#readme",
+  "dependencies": {
+    "cros": "^1.1.0",
+    "dotenv": "^16.6.0",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  }
+}
