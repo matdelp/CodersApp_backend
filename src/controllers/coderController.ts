@@ -41,6 +41,7 @@ export const coderController = {
       message: `User ${firstName} ${lastName} created successfully`,
     });
   },
+  
   loginCoder: async (req: Request, res: Response) => {
     try {
       const { error, value } = loginSchema.validate(req.body);
