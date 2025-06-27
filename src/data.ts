@@ -1,4 +1,5 @@
 type User = {
+  id: number
   firstName: string;
   lastName: string;
   email: string;
@@ -15,6 +16,7 @@ type Coder = User & {
 type Manager = User;
 export const coders: Coder[] = [
   {
+    id: 1,
     firstName: "Alice",
     lastName: "Johnson",
     email: "alice.johnson@example.com",
@@ -24,6 +26,7 @@ export const coders: Coder[] = [
     score: 95,
   },
   {
+    id: 2,
     firstName: "Bob",
     lastName: "Smith",
     email: "bob.smith@example.com",
@@ -33,6 +36,7 @@ export const coders: Coder[] = [
     score: 88,
   },
   {
+    id: 3,
     firstName: "Clara",
     lastName: "Lee",
     email: "clara.lee@example.com",
@@ -42,6 +46,7 @@ export const coders: Coder[] = [
     score: 92,
   },
   {
+    id: 4,
     firstName: "David",
     lastName: "Nguyen",
     email: "david.nguyen@example.com",
@@ -51,6 +56,7 @@ export const coders: Coder[] = [
     score: 85,
   },
   {
+    id: 5,
     firstName: "Eva",
     lastName: "Martinez",
     email: "eva.martinez@example.com",
@@ -62,6 +68,7 @@ export const coders: Coder[] = [
 ];
 export const managers: Manager[] = [
   {
+    id: 1,
     firstName: "Sophie",
     lastName: "Dupont",
     email: "sophie.dupont@example.com",
@@ -69,6 +76,7 @@ export const managers: Manager[] = [
     avatar: "https://randomuser.me/api/portraits/women/10.jpg",
   },
   {
+    id: 2,
     firstName: "Lucas",
     lastName: "Martin",
     email: "lucas.martin@example.com",
@@ -76,6 +84,7 @@ export const managers: Manager[] = [
     avatar: "https://randomuser.me/api/portraits/men/11.jpg",
   },
   {
+    id: 3,
     firstName: "Emma",
     lastName: "Schmidt",
     email: "emma.schmidt@example.com",
