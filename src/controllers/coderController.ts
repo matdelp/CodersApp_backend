@@ -41,7 +41,7 @@ export const coderController = {
       message: `User ${firstName} ${lastName} created successfully`,
     });
   },
-  
+
   loginCoder: async (req: Request, res: Response) => {
     try {
       const { error, value } = loginSchema.validate(req.body);
@@ -67,5 +67,40 @@ export const coderController = {
         message: error.message,
       });
     }
+  },
+
+  getInfoCoder: async (req: Request, res: Response) => {
+    const coderId = req.params.id;
+    const coder = coders.find((coder) => coder._id === Number(coderId));
+
+    if (!coder) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+    res.status(200).json(coder);
+  },
+
+  updateInfoCoder: async (req: Request, res: Response) => {
+    const { error, value } = coderSchema.validate(req.body);
+    if (error) {
+      res.status(400).json({ error: error.details[0].message });
+      return;
+    }
+    const { firstName, lastName, avatar, description } = value;
+    const coderId = req.params.id;
+    const coder = coders.find((coder) => coder._id === Number(coderId));
+    if (!coder) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+    coder.firstName = firstName;
+    coder.lastName = lastName;
+    coder.avatar = avatar;
+    coder.description = description;
+
+    res.status(200).json({
+      message: `${firstName}'s profile updated successfully`,
+      coder: coder,
+    });
   },
 };
