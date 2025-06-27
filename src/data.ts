@@ -1,5 +1,5 @@
 type User = {
-  id: number
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -8,7 +8,7 @@ type User = {
 };
 
 type Coder = User & {
-  description: string;
+  description?: string;
   score: number;
 };
 
