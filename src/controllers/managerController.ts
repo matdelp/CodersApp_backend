@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
-import { managers } from "../data"; //fetch from db later
+import { coders, managers } from "../data"; //fetch from db later
 import Joi from "joi";
+import { createToken, encryptPasword, validatePassword } from "../utils";
+import { loginSchema } from "./coderController";
 
 const managerSchema = Joi.object({
   firstName: Joi.string().min(2).required(),
@@ -10,26 +12,58 @@ const managerSchema = Joi.object({
   avatar: Joi.string().uri().optional(),
 });
 
+//Register endpoint
 export const managerController = {
-  createManager: (req: Request, res: Response) => {
-    const { error, value } = managerSchema.validate(req.body);
-    if (error) {
-      res.status(400).json({ error: error.details[0].message });
-      return;
+  createManager: async (req: Request, res: Response) => {
+    try {
+      const { error, value } = managerSchema.validate(req.body);
+      if (error) {
+        res.status(400).json({ error: error.details[0].message });
+        return;
+      }
+      const { firstName, lastName, email, password, avatar } = value;
+      const hashedPswd = await encryptPasword(password);
+      const newManager = {
+        _id: managers.length + 1, //simulate id generation before I have a db
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: hashedPswd,
+        avatar: avatar,
+      };
+      managers.push(newManager);
+      res.status(201).json({
+        message: `User ${firstName} ${lastName} created successfully`,
+      });
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message,
+      });
     }
-    const { firstName, lastName, email, password, avatar } = value;
-    const newManager = {
-      id: managers.length + 1, //simulate id generation before I have a db
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password,
-      avatar: avatar,
-    };
-    managers.push(newManager);
-    res.status(201).json({
-      message: `User ${firstName} ${lastName} created successfully`,
-      data: managers,
-    });
+  },
+
+  //Login endpoint
+  loginManager: async (req: Request, res: Response) => {
+    try {
+      const { error, value } = loginSchema.validate(req.body);
+      const { email, password } = value;
+      if (error) {
+        res.status(400).json({ error: error.details[0].message });
+        return;
+      }
+      const manager = managers.find((manager) => manager.email === email);
+      if (!manager) throw new Error("Invalid Credentials");
+      const isMatching = await validatePassword(password, manager.password);
+      if (!isMatching) throw new Error("Invalid Credentials");
+      const token = createToken(manager);
+      res.status(200).json({
+        message: `User ${email} logged in successfully`,
+        token: token,
+      });
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message,
+      });
+    }
   },
 };

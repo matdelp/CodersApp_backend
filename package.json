@@ -18,12 +18,16 @@
   },
   "homepage": "https://github.com/matdelp/CodersApp_backend#readme",
   "dependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.0.4",
+    "bcrypt": "^6.0.0",
     "cros": "^1.1.0",
     "dotenv": "^16.6.0",
     "express": "^4.21.2",
     "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"

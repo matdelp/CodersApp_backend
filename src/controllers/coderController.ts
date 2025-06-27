@@ -1,6 +1,7 @@
 import Joi from "joi";
 import { coders } from "../data"; //fetch from db later
 import { Request, Response } from "express";
+import { createToken, encryptPasword, validatePassword } from "../utils";
 
 const coderSchema = Joi.object({
   firstName: Joi.string().min(2).required(),
@@ -11,20 +12,26 @@ const coderSchema = Joi.object({
   description: Joi.string().optional(),
 });
 
+export const loginSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
+});
+
 export const coderController = {
-  createCoder: (req: Request, res: Response) => {
+  createCoder: async (req: Request, res: Response) => {
     const { error, value } = coderSchema.validate(req.body);
     if (error) {
       res.status(400).json({ error: error.details[0].message });
       return;
     }
     const { firstName, lastName, email, password, avatar, description } = value;
+    const hashedPswd = await encryptPasword(password);
     const newCoder = {
-      id: coders.length + 1, //simulate id generation before I have a db
+      _id: coders.length + 1, //simulate id generation before I have a db
       firstName: firstName,
       lastName: lastName,
       email: email,
-      password: password,
+      password: hashedPswd,
       avatar: avatar,
       description: description,
       score: 0,
@@ -32,7 +39,32 @@ export const coderController = {
     coders.push(newCoder);
     res.status(201).json({
       message: `User ${firstName} ${lastName} created successfully`,
-      data: coders,
     });
+  },
+  loginCoder: async (req: Request, res: Response) => {
+    try {
+      const { error, value } = loginSchema.validate(req.body);
+      const { email, password } = value;
+
+      if (error) {
+        res.status(400).json({ error: error.details[0].message });
+        return;
+      }
+      const coder = coders.find((coder) => coder.email === email);
+      if (!coder) throw new Error("Invalid Credentials");
+
+      const isMatching = await validatePassword(password, coder.password);
+      if (!isMatching) throw new Error("Invalid Credentials");
+
+      const token = createToken(coder);
+      res.status(200).json({
+        message: `User ${email} logged in successfully`,
+        token: token,
+      });
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message,
+      });
+    }
   },
 };
