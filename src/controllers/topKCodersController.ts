@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import { coders, topKcoders } from "../data"; //fetch from db later
-import { createToken, encryptPasword, validatePassword } from "../utils";
 import Joi from "joi";
+import { topKcoders } from "../data"; //fetch from db later
 
 const topkcodersSchema = Joi.object({
   k: Joi.number(),
