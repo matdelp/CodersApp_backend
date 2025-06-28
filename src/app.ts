@@ -10,14 +10,12 @@ const port = process.env.PORT || 4000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.send("Hello world");
-});
-
 app.use("/coders", coderRouter);
 app.use("/managers", managerRouter);
 app.use("/challenges", challengeRouter);
-
+app.get("/", (req, res) => {
+  res.send("Hello world");
+});
 app.listen(port, () => {
   console.log(`Server is running on: http://localhost:${port}/`);
 });

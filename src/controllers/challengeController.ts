@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import Joi from "joi";
-import { Challenge, Input, Test, TestInput, challenges } from "../data";
-import { error } from "console";
+import { Challenge, challenges } from "../data";
 
 const challengeSchema = Joi.object({
   title: Joi.string().min(2).required(),
@@ -12,7 +11,7 @@ const challengeSchema = Joi.object({
     functionName: Joi.string().required(),
     codeText: Joi.object({
       language: Joi.string().required(),
-      text: Joi.string().required(),
+      content: Joi.string().required(),
     }),
     inputs: Joi.array().items(
       Joi.object({
@@ -76,7 +75,6 @@ export const challengeController = {
       challenge: newChallenge,
     });
   },
-
   getAllChallenges: async (req: Request, res: Response) => {
     try {
       const { category } = req.query;
@@ -108,6 +106,24 @@ export const challengeController = {
       );
       res.json(selectedChallenge);
       return;
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message,
+      });
+    }
+  },
+  getAllCategories: async (req: Request, res: Response) => {
+
+    try {
+      const categories = Array.from(
+        new Set(challenges.map((challenge) => challenge.category))
+      );
+      console.log(categories);
+
+      res.status(200).json({
+        message: "Challenge categories",
+        data: categories,
+      });
     } catch (error: any) {
       res.status(400).json({
         message: error.message,
