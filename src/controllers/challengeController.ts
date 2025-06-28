@@ -41,77 +41,51 @@ export const challengeController = {
       res.status(400).json({ error: error.details[0].message });
       return;
     }
-  const { title, category, description, level, code } = value;
-  const newChallenge: Challenge = {
-    _id: challenges.length + 1, // simulate id generation before I have a db
-    title,
-    category,
-    description,
-    level,
-    code: {
-      functionName: code.functionName,
-      codeText: {
-        language: code.codeText.language,
-        content: code.codeText.content,
+    const { title, category, description, level, code } = value;
+    const newChallenge: Challenge = {
+      _id: challenges.length + 1, // simulate id generation before I have a db
+      title,
+      category,
+      description,
+      level,
+      code: {
+        functionName: code.functionName,
+        codeText: {
+          language: code.codeText.language,
+          content: code.codeText.content,
+        },
+        inputs: code.inputs.map((input: any) => ({
+          name: input.name,
+          type: input.type,
+        })),
       },
-      inputs: code.inputs.map((input: any) => ({
-        name: input.name,
-        type: input.type,
+      tests: code.tests.map((test: any) => ({
+        weight: test.weight,
+        inputs: test.inputs.map((input: any) => ({
+          name: input.name,
+          value: input.value,
+        })),
+        output: test.output,
       })),
-    },
-    tests: code.tests.map((test: any) => ({
-      weight: test.weight,
-      inputs: test.inputs.map((input: any) => ({
-        name: input.name,
-        value: input.value,
-      })),
-      output: test.output,
-    })),
-  };
+    };
 
-  challenges.push(newChallenge);
-  res.status(201).json({
-    message: `Challenge "${title}" created successfully`,
-    challenge: newChallenge,
-  });
-}
-  //   try {
-  //     const { error, value } = loginSchema.validate(req.body);
-  //     const { email, password } = value;
+    challenges.push(newChallenge);
+    res.status(201).json({
+      message: `Challenge "${title}" created successfully`,
+      challenge: newChallenge,
+    });
+  },
 
-  //     if (error) {
-  //       res.status(400).json({ error: error.details[0].message });
-  //       return;
-  //     }
-  //     const coder = coders.find((coder) => coder.email === email);
-  //     if (!coder) throw new Error("Invalid Credentials");
-
-  //     const isMatching = await validatePassword(password, coder.password);
-  //     if (!isMatching) throw new Error("Invalid Credentials");
-
-  //     const token = createToken(coder);
-  //     res.status(200).json({
-  //       message: `User ${email} logged in successfully`,
-  //       token: token,
-  //     });
-  //   } catch (error: any) {
-  //     res.status(400).json({
-  //       message: error.message,
-  //     });
-  //   }
-  // },
-
-  // getInfoCoder: async (req: Request, res: Response) => {
-  //   const coderId = req.params.id;
-  //   const coder = coders.find((coder) => coder._id === Number(coderId));
-
-  //   if (!coder) {
-  //     res.status(404).json({ error: "User not found" });
-  //     return;
-  //   }
-  //   res.status(200).json(coder);
-  // },
-
+  getAllChallenges: async (req: Request, res: Response) => {
+    try {
+      res.json({ message: "List of challenges:", data: challenges });
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message,
+      });
+    }
+  },
+  
   // updateInfoCoder: async (req: Request, res: Response) => {
   //   const { error, value } = coderSchema.validate(req.body);
   //   if (error) {

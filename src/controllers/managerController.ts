@@ -83,7 +83,7 @@ export const managerController = {
   },
 
   //Update Profile endpoint
-  updateInfoCoder: async (req: Request, res: Response) => {
+  updateInfoManager: async (req: Request, res: Response) => {
     const { error, value } = managerSchema.validate(req.body);
     if (error) {
       res.status(400).json({ error: error.details[0].message });
