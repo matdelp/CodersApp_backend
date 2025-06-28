@@ -1,8 +1,9 @@
-import express from "express";
 import dotenv from "dotenv";
+import express from "express";
+import { challengeRouter } from "./routes/challengeRoute";
 import { coderRouter } from "./routes/codersRoute";
 import { managerRouter } from "./routes/managerRoute";
-import { challengeRouter } from "./routes/challengeRoute";
+import { submissionRouter } from "./routes/submissionRoute";
 dotenv.config();
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/coders", coderRouter);
 app.use("/managers", managerRouter);
 app.use("/challenges", challengeRouter);
+app.use("/submit", submissionRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello world");

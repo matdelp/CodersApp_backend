@@ -21,7 +21,7 @@ export type Challenge = {
   title: string;
   category: string;
   description: string;
-  level: string;
+  level: "Easy" | "Moderate" | "Hard";
   code: Code;
   tests: Test[];
 };
@@ -33,7 +33,7 @@ type Code = {
 };
 
 type CodeText = {
-  language: string;
+  language: "py" | "js";
   content: string;
 };
 
@@ -49,6 +49,13 @@ export type Test = {
 export type TestInput = {
   testInputName: string;
   testInputValue: string;
+};
+
+export type Submission = {
+  _id: number;
+  challenge_id: string;
+  lang: "py" | "js";
+  code: string;
 };
 
 export const coders: Coder[] = [
@@ -137,7 +144,7 @@ export const challenges: Challenge[] = [
     category: "Math",
     description:
       "### Problem Statement:\nCompute the nth Fibonacci number. The Fibonacci sequence is defined as follows: `F(0) = 0`, `F(1) = 1`, and `F(n) = F(n-1) + F(n-2)` for `n > 1`.\n\n### Example:\nFor example, the 6th Fibonacci number is `F(6) = 8`.\n\n### Constraints:\n- The input `n` is a non-negative integer.\n- `0 <= n <= 30`.\n\n### Approach:\nA simple approach is to use recursion. Define a function `fibonacci(n)` that returns the nth Fibonacci number. The base cases are when `n` is `0` or `1`.\n\n### Implementation:\nDefine a recursive function `fibonacci(n)` that handles the base cases and recursively computes the sum of the previous two Fibonacci numbers.",
-    level: "Medium",
+    level: "Moderate",
     code: {
       functionName: "fibonacci",
       codeText: {
@@ -229,5 +236,14 @@ export const challenges: Challenge[] = [
         testOutputs: "olleh",
       },
     ],
+  },
+];
+
+export const submissions: Submission[] = [
+  {
+    _id: 1,
+    challenge_id: "65feaac34c7c0fa50a47fb3e",
+    lang: "py",
+    code: "def factorial(n):\n\tif n == 0: return 2 \n\treturn n *factorial(n-1)",
   },
 ];

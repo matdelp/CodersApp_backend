@@ -6,11 +6,11 @@ const challengeSchema = Joi.object({
   title: Joi.string().min(2).required(),
   category: Joi.string().min(2).required(),
   description: Joi.string().required(),
-  level: Joi.string().required(),
+  level: Joi.string().valid("Easy", "Moderate", "Hard").required(),
   code: Joi.object({
     functionName: Joi.string().required(),
     codeText: Joi.object({
-      language: Joi.string().required(),
+      language: Joi.string().valid("py", "js").required(),
       content: Joi.string().required(),
     }),
     inputs: Joi.array().items(
@@ -113,7 +113,6 @@ export const challengeController = {
     }
   },
   getAllCategories: async (req: Request, res: Response) => {
-
     try {
       const categories = Array.from(
         new Set(challenges.map((challenge) => challenge.category))
