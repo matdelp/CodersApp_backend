@@ -1,29 +1,7 @@
-import Joi from "joi";
-import { coders } from "../data"; //fetch from db later
 import { Request, Response } from "express";
+import { coders } from "../data"; //fetch from db later
+import { coderSchema, loginSchema, updateSchema } from "../schema/schemaJoi";
 import { createToken, encryptPasword, validatePassword } from "../utils";
-
-const coderSchema = Joi.object({
-  firstName: Joi.string().min(2).required(),
-  lastName: Joi.string().min(2).required(),
-  email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
-  avatar: Joi.string().uri().optional(),
-  description: Joi.string().optional(),
-  score: Joi.number().required(),
-});
-
-export const loginSchema = Joi.object({
-  email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
-});
-
-export const updateSchema = Joi.object({
-  firstName: Joi.string().min(2).optional(),
-  lastName: Joi.string().min(2).optional(),
-  avatar: Joi.string().uri().optional(),
-  description: Joi.string().optional(),
-});
 
 export const coderController = {
   createCoder: async (req: Request, res: Response) => {
