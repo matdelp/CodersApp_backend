@@ -6,6 +6,9 @@ import { managerRouter } from "./routes/managerRoute";
 import { submissionRouter } from "./routes/submissionRoute";
 import { leaderboardRouter } from "./routes/leaderboardRoute";
 import { topKCodersRouter } from "./routes/topKCodersRoute";
+import { solvedChallengesRouter } from "./routes/solvedChallengesRoute";
+import { trendingCategoriesRouter } from "./routes/trendingCategoriesRoute";
+import { heatmapRouter } from "./routes/heatmapRoute";
 dotenv.config();
 
 const app = express();
@@ -19,6 +22,9 @@ app.use("/challenges", challengeRouter);
 app.use("/submit", submissionRouter);
 app.use("/leaderboard", leaderboardRouter);
 app.use("/topkcoders", topKCodersRouter);
+app.use("/solvedchallenges", solvedChallengesRouter);
+app.use("/trendingcategories", trendingCategoriesRouter);
+app.use("/heatmap", heatmapRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello world");

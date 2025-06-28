@@ -255,3 +255,9 @@ type TopKCoders = {
   k: number;
 };
 export const topKcoders: TopKCoders[] = [];
+
+export const solvedChallenges = [];
+
+export const trendingCategories = [];
+
+export const heatmap = [];
