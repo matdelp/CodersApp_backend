@@ -13,9 +13,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/coders", coderRouter);
 app.use("/managers", managerRouter);
 app.use("/challenges", challengeRouter);
+
 app.get("/", (req, res) => {
   res.send("Hello world");
 });
+
 app.listen(port, () => {
   console.log(`Server is running on: http://localhost:${port}/`);
 });
