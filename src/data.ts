@@ -247,3 +247,11 @@ export const submissions: Submission[] = [
     code: "def factorial(n):\n\tif n == 0: return 2 \n\treturn n *factorial(n-1)",
   },
 ];
+
+export const leaderboard: Coder[] = [];
+
+type TopKCoders = {
+  name: string;
+  k: number;
+};
+export const topKcoders: TopKCoders[] = [];

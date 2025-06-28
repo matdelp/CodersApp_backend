@@ -4,6 +4,8 @@ import { challengeRouter } from "./routes/challengeRoute";
 import { coderRouter } from "./routes/codersRoute";
 import { managerRouter } from "./routes/managerRoute";
 import { submissionRouter } from "./routes/submissionRoute";
+import { leaderboardRouter } from "./routes/leaderboardRoute";
+import { topKCodersRouter } from "./routes/topKCodersRoute";
 dotenv.config();
 
 const app = express();
@@ -15,6 +17,8 @@ app.use("/coders", coderRouter);
 app.use("/managers", managerRouter);
 app.use("/challenges", challengeRouter);
 app.use("/submit", submissionRouter);
+app.use("/leaderboard", leaderboardRouter);
+app.use("/topkcoders", topKCodersRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello world");
