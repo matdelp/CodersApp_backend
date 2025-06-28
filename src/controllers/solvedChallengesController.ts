@@ -8,6 +8,10 @@ export const solvedChallengesController = {
         message: "List of solved Challenges",
         data: solvedChallenges,
       });
-    } catch (error) {}
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message,
+      });
+    }
   },
 };

@@ -8,6 +8,10 @@ export const trendingCategoriesController = {
         message: "List of trending Categories",
         data: trendingCategories,
       });
-    } catch (error) {}
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message,
+      });
+    }
   },
 };
