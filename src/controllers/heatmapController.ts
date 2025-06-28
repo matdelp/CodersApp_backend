@@ -9,9 +9,11 @@ export const heatmapController = {
         res.status(400).json("Starting and Ending dates required");
         return;
       }
-      res.json({
+      res.status(200).json({
         message: "Heatmap",
-        data: heatmap, start_date, end_date
+        data: heatmap,
+        start_date,
+        end_date,
       });
     } catch (error: any) {
       res.status(400).json({

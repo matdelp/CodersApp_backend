@@ -4,7 +4,7 @@ import { solvedChallenges, trendingCategories } from "../data"; //fetch from db 
 export const trendingCategoriesController = {
   getTrendingCategories: async (req: Request, res: Response) => {
     try {
-      res.json({
+      res.status(200).json({
         message: "List of trending Categories",
         data: trendingCategories,
       });

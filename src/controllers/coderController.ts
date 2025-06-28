@@ -19,27 +19,34 @@ export const loginSchema = Joi.object({
 
 export const coderController = {
   createCoder: async (req: Request, res: Response) => {
-    const { error, value } = coderSchema.validate(req.body);
-    if (error) {
-      res.status(400).json({ error: error.details[0].message });
-      return;
+    try {
+      const { error, value } = coderSchema.validate(req.body);
+      if (error) {
+        res.status(400).json({ error: error.details[0].message });
+        return;
+      }
+      const { firstName, lastName, email, password, avatar, description } =
+        value;
+      const hashedPswd = await encryptPasword(password);
+      const newCoder = {
+        _id: coders.length + 1, //simulate id generation before I have a db
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: hashedPswd,
+        avatar: avatar,
+        description: description,
+        score: 0,
+      };
+      coders.push(newCoder);
+      res.status(201).json({
+        message: `User ${firstName} ${lastName} created successfully`,
+      });
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message,
+      });
     }
-    const { firstName, lastName, email, password, avatar, description } = value;
-    const hashedPswd = await encryptPasword(password);
-    const newCoder = {
-      _id: coders.length + 1, //simulate id generation before I have a db
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: hashedPswd,
-      avatar: avatar,
-      description: description,
-      score: 0,
-    };
-    coders.push(newCoder);
-    res.status(201).json({
-      message: `User ${firstName} ${lastName} created successfully`,
-    });
   },
 
   loginCoder: async (req: Request, res: Response) => {

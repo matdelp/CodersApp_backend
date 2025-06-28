@@ -69,42 +69,54 @@ export const managerController = {
 
   //Profile endpoint
   getInfoManager: async (req: Request, res: Response) => {
-    const managerId = req.params.id;
-    console.log(req.params.id);
-    const manager = managers.find(
-      (manager) => manager._id === Number(managerId)
-    );
+    try {
+      const managerId = req.params.id;
+      console.log(req.params.id);
+      const manager = managers.find(
+        (manager) => manager._id === Number(managerId)
+      );
 
-    if (!manager) {
-      res.status(404).json({ error: "user not found" });
-      return;
+      if (!manager) {
+        res.status(404).json({ error: "user not found" });
+        return;
+      }
+      res.status(200).json(manager);
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message,
+      });
     }
-    res.status(200).json(manager);
   },
 
   //Update Profile endpoint
   updateInfoManager: async (req: Request, res: Response) => {
-    const { error, value } = managerSchema.validate(req.body);
-    if (error) {
-      res.status(400).json({ error: error.details[0].message });
-      return;
-    }
-    const { firstName, lastName, avatar } = value;
-    const managerId = req.params.id;
-    const manager = managers.find(
-      (manager) => manager._id === Number(managerId)
-    );
-    if (!manager) {
-      res.status(404).json({ error: "User not found" });
-      return;
-    }
-    manager.firstName = firstName;
-    manager.lastName = lastName;
-    manager.avatar = avatar;
+    try {
+      const { error, value } = managerSchema.validate(req.body);
+      if (error) {
+        res.status(400).json({ error: error.details[0].message });
+        return;
+      }
+      const { firstName, lastName, avatar } = value;
+      const managerId = req.params.id;
+      const manager = managers.find(
+        (manager) => manager._id === Number(managerId)
+      );
+      if (!manager) {
+        res.status(404).json({ error: "User not found" });
+        return;
+      }
+      manager.firstName = firstName;
+      manager.lastName = lastName;
+      manager.avatar = avatar;
 
-    res.status(200).json({
-      message: `${firstName}'s profile updated successfully`,
-      manager: manager,
-    });
+      res.status(200).json({
+        message: `${firstName}'s profile updated successfully`,
+        manager: manager,
+      });
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message,
+      });
+    }
   },
 };

@@ -18,7 +18,7 @@ export const topKCodersController = {
       const selectedCoders = topKcoders.filter(
         (coder) => coder.k === Number(k)
       );
-      res.json({
+      res.status(200).json({
         message: `Top K coders`,
         data: selectedCoders,
       });

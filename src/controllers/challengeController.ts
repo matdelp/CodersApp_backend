@@ -36,57 +36,66 @@ const challengeSchema = Joi.object({
 
 export const challengeController = {
   createChallenge: async (req: Request, res: Response) => {
-    const { error, value } = challengeSchema.validate(req.body);
-    if (error) {
-      res.status(400).json({ error: error.details[0].message });
-      return;
-    }
-    const { title, category, description, level, code } = value;
-    const newChallenge: Challenge = {
-      _id: challenges.length + 1, // simulate id generation before I have a db
-      title,
-      category,
-      description,
-      level,
-      code: {
-        functionName: code.functionName,
-        codeText: {
-          language: code.codeText.language,
-          content: code.codeText.content,
+    try {
+      const { error, value } = challengeSchema.validate(req.body);
+      if (error) {
+        res.status(400).json({ error: error.details[0].message });
+        return;
+      }
+      const { title, category, description, level, code } = value;
+      const newChallenge: Challenge = {
+        _id: challenges.length + 1, // simulate id generation before I have a db
+        title,
+        category,
+        description,
+        level,
+        code: {
+          functionName: code.functionName,
+          codeText: {
+            language: code.codeText.language,
+            content: code.codeText.content,
+          },
+          inputs: code.inputs.map((input: any) => ({
+            name: input.name,
+            type: input.type,
+          })),
         },
-        inputs: code.inputs.map((input: any) => ({
-          name: input.name,
-          type: input.type,
+        tests: code.tests.map((test: any) => ({
+          weight: test.weight,
+          inputs: test.inputs.map((input: any) => ({
+            name: input.name,
+            value: input.value,
+          })),
+          output: test.output,
         })),
-      },
-      tests: code.tests.map((test: any) => ({
-        weight: test.weight,
-        inputs: test.inputs.map((input: any) => ({
-          name: input.name,
-          value: input.value,
-        })),
-        output: test.output,
-      })),
-    };
+      };
 
-    challenges.push(newChallenge);
-    res.status(201).json({
-      message: `Challenge "${title}" created successfully`,
-      challenge: newChallenge,
-    });
+      challenges.push(newChallenge);
+      res.status(201).json({
+        message: `Challenge "${title}" created successfully`,
+        challenge: newChallenge,
+      });
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message,
+      });
+    }
   },
+
   getAllChallenges: async (req: Request, res: Response) => {
     try {
       const { category } = req.query;
 
       if (!category) {
-        res.json({ message: "List of challenges:", data: challenges });
+        res
+          .status(200)
+          .json({ message: "List of challenges:", data: challenges });
         return;
       }
       const selectedChallenges = challenges.filter(
         (challenge) => challenge.category === category
       );
-      res.json({
+      res.status(200).json({
         message: `List of challenges for category ${category}:`,
         data: selectedChallenges,
       });
@@ -96,6 +105,7 @@ export const challengeController = {
       });
     }
   },
+
   getChallengeById: async (req: Request, res: Response) => {
     try {
       const challengeId = req.params.id;
@@ -104,7 +114,7 @@ export const challengeController = {
       const selectedChallenge = challenges.filter(
         (challenge) => challenge._id === parseInt(challengeId)
       );
-      res.json(selectedChallenge);
+      res.status(200).json(selectedChallenge);
       return;
     } catch (error: any) {
       res.status(400).json({
@@ -112,13 +122,12 @@ export const challengeController = {
       });
     }
   },
+
   getAllCategories: async (req: Request, res: Response) => {
     try {
       const categories = Array.from(
         new Set(challenges.map((challenge) => challenge.category))
       );
-      console.log(categories);
-
       res.status(200).json({
         message: "Challenge categories",
         data: categories,
