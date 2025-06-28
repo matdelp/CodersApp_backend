@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { Challenge, Input, Test, TestInput, challenges } from "../data";
+import { error } from "console";
 
 const challengeSchema = Joi.object({
   title: Joi.string().min(2).required(),
@@ -97,28 +98,20 @@ export const challengeController = {
       });
     }
   },
+  getChallengeById: async (req: Request, res: Response) => {
+    try {
+      const challengeId = req.params.id;
+      if (!challengeId)
+        throw new Error(`Challenge with id ${challengeId} does not exist`);
+      const selectedChallenge = challenges.filter(
+        (challenge) => challenge._id === parseInt(challengeId)
+      );
+      res.json(selectedChallenge);
+      return;
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message,
+      });
+    }
+  },
 };
-
-// updateInfoCoder: async (req: Request, res: Response) => {
-//   const { error, value } = coderSchema.validate(req.body);
-//   if (error) {
-//     res.status(400).json({ error: error.details[0].message });
-//     return;
-//   }
-//   const { firstName, lastName, avatar, description } = value;
-//   const coderId = req.params.id;
-//   const coder = coders.find((coder) => coder._id === Number(coderId));
-//   if (!coder) {
-//     res.status(404).json({ error: "User not found" });
-//     return;
-//   }
-//   coder.firstName = firstName;
-//   coder.lastName = lastName;
-//   coder.avatar = avatar;
-//   coder.description = description;
-
-//   res.status(200).json({
-//     message: `${firstName}'s profile updated successfully`,
-//     coder: coder,
-//   });
-// },
