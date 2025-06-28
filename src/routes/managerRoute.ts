@@ -5,5 +5,5 @@ export const managerRouter = express.Router();
 
 managerRouter.post("/register", managerController.createManager);
 managerRouter.post("/login", managerController.loginManager);
-managerRouter.get("/profile/id", managerController.getInfoManager);
-managerRouter.patch("/profile/update", managerController.updateInfoManager);
+managerRouter.get("/profile/:id", managerController.getInfoManager);
+managerRouter.patch("/profile/update/:id", managerController.updateInfoManager);

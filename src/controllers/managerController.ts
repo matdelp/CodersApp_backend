@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { coders, managers } from "../data"; //fetch from db later
 import Joi from "joi";
 import { createToken, encryptPasword, validatePassword } from "../utils";
-import { loginSchema } from "./coderController";
+import { loginSchema, updateSchema } from "./coderController";
 
 const managerSchema = Joi.object({
   firstName: Joi.string().min(2).required(),
@@ -71,7 +71,6 @@ export const managerController = {
   getInfoManager: async (req: Request, res: Response) => {
     try {
       const managerId = req.params.id;
-      console.log(req.params.id);
       const manager = managers.find(
         (manager) => manager._id === Number(managerId)
       );
@@ -91,7 +90,7 @@ export const managerController = {
   //Update Profile endpoint
   updateInfoManager: async (req: Request, res: Response) => {
     try {
-      const { error, value } = managerSchema.validate(req.body);
+      const { error, value } = updateSchema.validate(req.body);
       if (error) {
         res.status(400).json({ error: error.details[0].message });
         return;

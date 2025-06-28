@@ -10,11 +10,19 @@ const coderSchema = Joi.object({
   password: Joi.string().min(6).required(),
   avatar: Joi.string().uri().optional(),
   description: Joi.string().optional(),
+  score: Joi.number().required(),
 });
 
 export const loginSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
+});
+
+export const updateSchema = Joi.object({
+  firstName: Joi.string().min(2).optional(),
+  lastName: Joi.string().min(2).optional(),
+  avatar: Joi.string().uri().optional(),
+  description: Joi.string().optional(),
 });
 
 export const coderController = {
@@ -88,7 +96,7 @@ export const coderController = {
   },
 
   updateInfoCoder: async (req: Request, res: Response) => {
-    const { error, value } = coderSchema.validate(req.body);
+    const { error, value } = updateSchema.validate(req.body);
     if (error) {
       res.status(400).json({ error: error.details[0].message });
       return;

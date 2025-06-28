@@ -9,29 +9,31 @@ const challengeSchema = Joi.object({
   level: Joi.string().valid("Easy", "Moderate", "Hard").required(),
   code: Joi.object({
     functionName: Joi.string().required(),
-    codeText: Joi.object({
-      language: Joi.string().valid("py", "js").required(),
-      content: Joi.string().required(),
-    }),
-    inputs: Joi.array().items(
+    codeText: Joi.array().items(
       Joi.object({
-        name: Joi.string().required(),
-        type: Joi.string().required(),
+        language: Joi.string().valid("py", "js").required(),
+        content: Joi.string().required(),
       })
     ),
-    tests: Joi.array().items(
+    inputs: Joi.array().items(
       Joi.object({
-        weight: Joi.number().min(0).max(1).required(),
-        inputs: Joi.array().items(
-          Joi.object({
-            name: Joi.string().required(),
-            value: Joi.number().required(),
-          })
-        ),
-        output: Joi.string().required(),
+        inputName: Joi.string().required(),
+        inputType: Joi.string().required(),
       })
     ),
   }),
+  tests: Joi.array().items(
+    Joi.object({
+      weight: Joi.number().min(0).max(1).required(),
+      testInputs: Joi.array().items(
+        Joi.object({
+          testInputName: Joi.string().required(),
+          testInputValue: Joi.number().required(),
+        })
+      ),
+      testOutput: Joi.string().required(),
+    })
+  ),
 });
 
 export const challengeController = {
@@ -56,18 +58,20 @@ export const challengeController = {
             content: code.codeText.content,
           },
           inputs: code.inputs.map((input: any) => ({
-            name: input.name,
-            type: input.type,
+            nainputNameme: input.name,
+            inputType: input.type,
           })),
         },
-        tests: code.tests.map((test: any) => ({
-          weight: test.weight,
-          inputs: test.inputs.map((input: any) => ({
-            name: input.name,
-            value: input.value,
-          })),
-          output: test.output,
-        })),
+        tests: Array.isArray(code.tests)
+          ? code.tests.map((test: any) => ({
+              weight: test.weight,
+              testInputs: test.inputs.map((input: any) => ({
+                testInputName: input.name,
+                testInputValue: input.value,
+              })),
+              testOutput: test.output,
+            }))
+          : [],
       };
 
       challenges.push(newChallenge);

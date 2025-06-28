@@ -44,7 +44,7 @@ export type Input = {
 export type Test = {
   weight: number;
   testInputs: TestInput[];
-  testOutputs: string;
+  testOutput: string;
 };
 export type TestInput = {
   testInputName: string;
@@ -167,7 +167,7 @@ export const challenges: Challenge[] = [
             testInputValue: "6",
           },
         ],
-        testOutputs: "8",
+        testOutput: "8",
       },
     ],
   },
@@ -200,7 +200,7 @@ export const challenges: Challenge[] = [
             testInputValue: "7",
           },
         ],
-        testOutputs: "true",
+        testOutput: "true",
       },
     ],
   },
@@ -233,7 +233,7 @@ export const challenges: Challenge[] = [
             testInputValue: "hello",
           },
         ],
-        testOutputs: "olleh",
+        testOutput: "olleh",
       },
     ],
   },
