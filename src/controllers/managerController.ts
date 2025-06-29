@@ -10,7 +10,6 @@ import {
 } from "../utils";
 import { ManagerModel } from "../models/Manager";
 
-//Register endpoint
 export const managerController = {
   createManager: async (req: Request, res: Response) => {
     try {
@@ -47,8 +46,7 @@ export const managerController = {
       });
     }
   },
-  //not updated yet
-  //Login endpoint
+
   loginManager: async (req: Request, res: Response) => {
     try {
       const { error, value } = loginSchema.validate(req.body);
@@ -57,11 +55,13 @@ export const managerController = {
         res.status(400).json({ error: error.details[0].message });
         return;
       }
-      const manager = managers.find((manager) => manager.email === email);
+      const manager = await ManagerModel.findOne({ email });
       if (!manager) throw new Error("Invalid Credentials");
+      if (!manager.is_verified) throw new Error("Email has not been verified");
       const isMatching = await validatePassword(password, manager.password);
       if (!isMatching) throw new Error("Invalid Credentials");
-      const token = createToken(manager);
+
+      const token = createToken(manager._id.toString(), email);
       res.status(200).json({
         message: `User ${email} logged in successfully`,
         token: token,
@@ -73,6 +73,7 @@ export const managerController = {
     }
   },
 
+  //not updated yet
   //Profile endpoint
   getInfoManager: async (req: Request, res: Response) => {
     try {

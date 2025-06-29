@@ -13,7 +13,7 @@ type User = {
 type Manager = User & {
   challenges: Challenge[];
 };
-type Coder = User & {
+export type Coder = User & {
   description?: string;
   score: number;
 };
@@ -62,7 +62,7 @@ export const coders: Coder[] = [
     firstName: "Alice",
     lastName: "Johnson",
     email: "alice.johnson@example.com",
-    password: "password123",
+    password: "$2b$10$UOeCWZOJQ1Uypvon77pIVembJlt7P12L.MC5EYvkvQ2uongbwd4om", //password123
     avatar: "https://randomuser.me/api/portraits/women/1.jpg",
     description: "Full-stack developer with a passion for open source.",
     score: 95,
@@ -72,7 +72,7 @@ export const coders: Coder[] = [
     firstName: "Bob",
     lastName: "Smith",
     email: "bob.smith@example.com",
-    password: "securepass456",
+    password: "$2b$10$UOeCWZOJQ1Uypvon77pIVembJlt7P12L.MC5EYvkvQ2uongbwd4om",
     avatar: "https://randomuser.me/api/portraits/men/2.jpg",
     description: "Backend specialist and database enthusiast.",
     score: 88,
@@ -139,7 +139,7 @@ export const managers: Manager[] = [
     firstName: "Sophie",
     lastName: "Dupont",
     email: "sophie.dupont@example.com",
-    password: "sophiepass123",
+    password: "$2b$10$UOeCWZOJQ1Uypvon77pIVembJlt7P12L.MC5EYvkvQ2uongbwd4om",
     avatar: "https://randomuser.me/api/portraits/women/10.jpg",
     challenges: [],
     is_verified: true,
@@ -148,7 +148,7 @@ export const managers: Manager[] = [
     firstName: "Lucas",
     lastName: "Martin",
     email: "lucas.martin@example.com",
-    password: "lucaspass456",
+    password: "$2b$10$UOeCWZOJQ1Uypvon77pIVembJlt7P12L.MC5EYvkvQ2uongbwd4om",
     avatar: "https://randomuser.me/api/portraits/men/11.jpg",
     challenges: [],
     is_verified: true,

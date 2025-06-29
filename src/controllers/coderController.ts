@@ -35,7 +35,7 @@ export const coderController = {
       });
       const regId = newCoder._id.toString();
       const token = createTokenForRegistration(regId, "coder");
-      
+
       sendMail(email, firstName, token);
       res.status(201).json({
         message: `User ${firstName} ${lastName} created successfully`,
@@ -47,7 +47,7 @@ export const coderController = {
       });
     }
   },
-  //not updated yet
+
   loginCoder: async (req: Request, res: Response) => {
     try {
       const { error, value } = loginSchema.validate(req.body);
@@ -57,13 +57,13 @@ export const coderController = {
         res.status(400).json({ error: error.details[0].message });
         return;
       }
-      const coder = coders.find((coder) => coder.email === email);
+      const coder = await CoderModel.findOne({ email });
       if (!coder) throw new Error("Invalid Credentials");
-
+      if (!coder.is_verified) throw new Error("Email has not been verified");
       const isMatching = await validatePassword(password, coder.password);
       if (!isMatching) throw new Error("Invalid Credentials");
 
-      const token = createToken(coder);
+      const token = createToken(coder._id.toString(), email);
       res.status(200).json({
         message: `User ${email} logged in successfully`,
         token: token,
@@ -74,7 +74,7 @@ export const coderController = {
       });
     }
   },
-
+  //not updated yet
   getInfoCoder: async (req: Request, res: Response) => {
     const coderId = req.params.id;
     const coder = coders.find((coder) => coder._id === Number(coderId));

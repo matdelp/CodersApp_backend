@@ -1,8 +1,7 @@
 import bcrypt from "bcrypt";
-import { User } from "./data";
+import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
-import dotenv from "dotenv";
 dotenv.config();
 
 export const encryptPasword = async (password: string) => {
@@ -12,22 +11,17 @@ export const encryptPasword = async (password: string) => {
 };
 
 export const validatePassword = async (inputPswd: string, password: string) => {
-  // const crypted = await bcrypt.compare(inputPswd, password); //ToDO once all password are encrypted in db
-  if (inputPswd !== password) return false;
-  return true;
+  const crypt = await bcrypt.compare(inputPswd, password);
+  return crypt;
 };
 
-export const createToken = (user: User) => {
+export const createToken = (id: string, email: string) => {
   if (!process.env.JWT_SECRET) {
     throw new Error("JWT_SECRET is not defined in environment variables");
   }
-  const jwtToken = jwt.sign(
-    { id: user._id },
-    process.env.JWT_SECRET as string,
-    {
-      expiresIn: "30d",
-    }
-  );
+  const jwtToken = jwt.sign({ id, email }, process.env.JWT_SECRET as string, {
+    expiresIn: "30d",
+  });
   return jwtToken;
 };
 
