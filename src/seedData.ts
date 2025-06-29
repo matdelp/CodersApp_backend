@@ -8,7 +8,7 @@ type User = {
   email: string;
   password: string;
   avatar?: string;
-  status: string;
+  is_verified: boolean;
 };
 type Manager = User & {
   challenges: Challenge[];
@@ -66,7 +66,7 @@ export const coders: Coder[] = [
     avatar: "https://randomuser.me/api/portraits/women/1.jpg",
     description: "Full-stack developer with a passion for open source.",
     score: 95,
-    status: "verified",
+    is_verified: true,
   },
   {
     firstName: "Bob",
@@ -76,7 +76,7 @@ export const coders: Coder[] = [
     avatar: "https://randomuser.me/api/portraits/men/2.jpg",
     description: "Backend specialist and database enthusiast.",
     score: 88,
-    status: "verified",
+    is_verified: true,
   },
 ];
 
@@ -142,7 +142,7 @@ export const managers: Manager[] = [
     password: "sophiepass123",
     avatar: "https://randomuser.me/api/portraits/women/10.jpg",
     challenges: [],
-    status: "verified",
+    is_verified: true,
   },
   {
     firstName: "Lucas",
@@ -151,7 +151,7 @@ export const managers: Manager[] = [
     password: "lucaspass456",
     avatar: "https://randomuser.me/api/portraits/men/11.jpg",
     challenges: [],
-    status: "verified",
+    is_verified: true,
   },
 ];
 export const submissions: Submission[] = [

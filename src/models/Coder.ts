@@ -32,9 +32,8 @@ export const schema = new Schema({
     type: Schema.Types.String,
     required: true,
   },
-  status: {
-    type: Schema.Types.String,
-    enum: ["verified", "unverified"],
+  is_verified: {
+    type: Schema.Types.Boolean,
     required: true,
   },
 });

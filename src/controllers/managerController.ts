@@ -25,7 +25,7 @@ export const managerController = {
         password: hashedPswd,
         avatar: avatar,
         challenges: [],
-        status: "unverified",
+        is_verified: false,
       });
       res.status(201).json({
         message: `User ${firstName} ${lastName} created successfully`,
@@ -37,7 +37,7 @@ export const managerController = {
       });
     }
   },
-
+//not updated yet
   //Login endpoint
   loginManager: async (req: Request, res: Response) => {
     try {

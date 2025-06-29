@@ -1,8 +1,14 @@
 import { Request, Response } from "express";
 import { coders } from "../data"; //fetch from db later
-import { coderSchema, loginSchema, updateSchema } from "../schema/schemaJoi";
-import { createToken, encryptPasword, validatePassword } from "../utils";
 import { CoderModel } from "../models/Coder";
+import { coderSchema, loginSchema, updateSchema } from "../schema/schemaJoi";
+import {
+  createToken,
+  createTokenForRegistration,
+  encryptPasword,
+  sendMail,
+  validatePassword,
+} from "../utils";
 
 export const coderController = {
   createCoder: async (req: Request, res: Response) => {
@@ -25,8 +31,12 @@ export const coderController = {
         avatar,
         description,
         score: 0,
-        status: "unverified",
+        is_verified: false,
       });
+      const regId = newCoder._id.toString();
+      const token = createTokenForRegistration(regId, "coder");
+      
+      sendMail(email, firstName, token);
       res.status(201).json({
         message: `User ${firstName} ${lastName} created successfully`,
         data: newCoder._id,
@@ -37,7 +47,7 @@ export const coderController = {
       });
     }
   },
-
+  //not updated yet
   loginCoder: async (req: Request, res: Response) => {
     try {
       const { error, value } = loginSchema.validate(req.body);

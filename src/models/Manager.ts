@@ -27,9 +27,8 @@ export const schema = new Schema({
   challenges: {
     type: [{ type: Schema.Types.ObjectId, ref: "Challenge" }],
   },
-  status: {
-    type: Schema.Types.String,
-    enum: ["verified", "unverified"],
+  is_verified: {
+    type: Schema.Types.Boolean,
     required: true,
   },
 });
