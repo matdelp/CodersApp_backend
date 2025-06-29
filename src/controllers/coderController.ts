@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { coders } from "../data"; //fetch from db later
 import { coderSchema, loginSchema, updateSchema } from "../schema/schemaJoi";
 import { createToken, encryptPasword, validatePassword } from "../utils";
+import { CoderModel } from "../models/Coder";
 
 export const coderController = {
   createCoder: async (req: Request, res: Response) => {
@@ -13,20 +14,21 @@ export const coderController = {
       }
       const { firstName, lastName, email, password, avatar, description } =
         value;
+      const checkEmail = await CoderModel.findById(email);
+      if (checkEmail) throw new Error("email already used to register");
       const hashedPswd = await encryptPasword(password);
-      const newCoder = {
-        _id: coders.length + 1, //simulate id generation before I have a db
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
+      const newCoder = await CoderModel.create({
+        firstName,
+        lastName,
+        email,
         password: hashedPswd,
-        avatar: avatar,
-        description: description,
+        avatar,
+        description,
         score: 0,
-      };
-      coders.push(newCoder);
+      });
       res.status(201).json({
         message: `User ${firstName} ${lastName} created successfully`,
+        data: newCoder._id,
       });
     } catch (error: any) {
       res.status(400).json({
