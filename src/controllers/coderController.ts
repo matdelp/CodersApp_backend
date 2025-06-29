@@ -14,7 +14,7 @@ export const coderController = {
       }
       const { firstName, lastName, email, password, avatar, description } =
         value;
-      const checkEmail = await CoderModel.findOne({email});
+      const checkEmail = await CoderModel.findOne({ email });
       if (checkEmail) throw new Error("email already used to register");
       const hashedPswd = await encryptPasword(password);
       const newCoder = await CoderModel.create({
@@ -25,6 +25,7 @@ export const coderController = {
         avatar,
         description,
         score: 0,
+        status: "unverified",
       });
       res.status(201).json({
         message: `User ${firstName} ${lastName} created successfully`,

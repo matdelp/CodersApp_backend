@@ -32,6 +32,11 @@ export const schema = new Schema({
     type: Schema.Types.String,
     required: true,
   },
+  status: {
+    type: Schema.Types.String,
+    enum: ["verified", "unverified"],
+    required: true,
+  },
 });
 
 export const CoderModel = model(DOCUMENT_NAME, schema, COLLECTION_NAME);

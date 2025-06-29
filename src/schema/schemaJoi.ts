@@ -8,6 +8,7 @@ export const coderSchema = Joi.object({
   avatar: Joi.string().uri().optional(),
   description: Joi.string().optional(),
   score: Joi.number().required(),
+  status: Joi.string().required(),
 });
 
 export const managerSchema = Joi.object({
@@ -17,6 +18,7 @@ export const managerSchema = Joi.object({
   password: Joi.string().min(6).required(),
   avatar: Joi.string().uri().optional(),
   challenges: Joi.array(),
+  status: Joi.string().required(),
 });
 
 export const loginSchema = Joi.object({

@@ -24,6 +24,8 @@ export const managerController = {
         email: email,
         password: hashedPswd,
         avatar: avatar,
+        challenges: [],
+        status: "unverified",
       });
       res.status(201).json({
         message: `User ${firstName} ${lastName} created successfully`,
