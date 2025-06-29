@@ -12,6 +12,10 @@ const schema = new Schema({
     type: Schema.Types.String,
     required: true,
   },
-});;
+});
 
-export const FunctionInputValue = model(DOCUMENT_NAME, schema, COLLECTION_NAME);
+export const FunctionInputValueModel = model(
+  DOCUMENT_NAME,
+  schema,
+  COLLECTION_NAME
+);

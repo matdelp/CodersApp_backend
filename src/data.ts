@@ -41,11 +41,11 @@ export type Input = {
   inputName: string;
   inputType: string;
 };
-export type Test = {
-  weight: number;
-  testInputs: TestInput[];
-  testOutput: string;
-};
+// export type Test = {
+//   weight: number;
+//   testInputs: TestInput[];
+//   testOutput: string;
+// };
 export type TestInput = {
   testInputName: string;
   testInputValue: string;

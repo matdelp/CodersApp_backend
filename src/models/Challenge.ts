@@ -21,19 +21,14 @@ const schema = new Schema({
     enum: ["Easy", "Moderate", "Hard"],
     required: true,
   },
-  owner_id: {
-    type: Schema.Types.String,
-    required: true,
-  },
+
   code: {
-    type: [{ type: Schema.Types.ObjectId, ref: "Code" }],
-    default: [],
-    required: true,
+    type: { type: Schema.Types.ObjectId, ref: "Code" },
+    default: {},
   },
   tests: {
     type: [{ type: Schema.Types.ObjectId, ref: "Test" }],
     default: [],
-    required: true,
   },
 });
 

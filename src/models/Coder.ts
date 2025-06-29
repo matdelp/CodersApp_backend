@@ -1,11 +1,29 @@
 import { model, Schema } from "mongoose";
-import { schemaProps as userSchemaProps } from "./Manager";
 
 const DOCUMENT_NAME = "Coder";
 const COLLECTION_NAME = "coder";
 
-const schemaProps = {
-  ...userSchemaProps,
+export const schema = new Schema({
+  firstName: {
+    type: Schema.Types.String,
+    required: true,
+  },
+  lastName: {
+    type: Schema.Types.String,
+    required: true,
+  },
+  email: {
+    type: Schema.Types.String,
+    required: true,
+  },
+  password: {
+    type: Schema.Types.String,
+    required: true,
+  },
+  avatar: {
+    type: Schema.Types.String,
+    required: false,
+  },
   description: {
     type: Schema.Types.String,
     required: false,
@@ -14,7 +32,6 @@ const schemaProps = {
     type: Schema.Types.String,
     required: true,
   },
-};
-const schema = new Schema(schemaProps);
+});
 
 export const CoderModel = model(DOCUMENT_NAME, schema, COLLECTION_NAME);

@@ -8,17 +8,11 @@ const schema = new Schema({
     type: Schema.Types.String,
     required: true,
   },
-  challenge_id: {
-    type: Schema.Types.String,
-    required: true,
-  },
   code_text: {
     type: [{ type: Schema.Types.ObjectId, ref: "CodeText" }],
-    required: true,
   },
   inputs: {
     type: [{ type: Schema.Types.ObjectId, ref: "FunctionInputDefinition" }],
-    required: true,
   },
 });
 

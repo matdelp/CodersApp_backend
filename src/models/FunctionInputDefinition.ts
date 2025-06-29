@@ -4,10 +4,6 @@ const DOCUMENT_NAME = "FunctionInputDefinition";
 const COLLECTION_NAME = "functionInputDefinition";
 
 const schema = new Schema({
-  code_id: {
-    type: Schema.Types.String,
-    required: true,
-  },
   name: {
     type: Schema.Types.String,
     required: true,

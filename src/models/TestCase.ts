@@ -4,10 +4,6 @@ const DOCUMENT_NAME = "TestCase";
 const COLLECTION_NAME = "testCase";
 
 const schema = new Schema({
-  challenge_id: {
-    type: Schema.Types.String,
-    required: true,
-  },
   weight: {
     type: Schema.Types.Number,
     required: true,
@@ -16,7 +12,7 @@ const schema = new Schema({
     type: [{ type: Schema.Types.ObjectId, ref: "functionInputValue" }],
     required: true,
   },
-  output: {
+  outputs: {
     type: Schema.Types.String,
     required: true,
   },

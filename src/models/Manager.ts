@@ -3,7 +3,7 @@ import { model, Schema } from "mongoose";
 const DOCUMENT_NAME = "Manager";
 const COLLECTION_NAME = "manager";
 
-export const schemaProps = {
+export const schema = new Schema({
   firstName: {
     type: Schema.Types.String,
     required: true,
@@ -24,7 +24,9 @@ export const schemaProps = {
     type: Schema.Types.String,
     required: false,
   },
-};
-const schema = new Schema(schemaProps);
+  challenges: {
+    type: [{ type: Schema.Types.ObjectId, ref: "Challenge" }],
+  },
+});
 
 export const ManagerModel = model(DOCUMENT_NAME, schema, COLLECTION_NAME);

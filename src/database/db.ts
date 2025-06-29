@@ -1,13 +1,13 @@
-import mongoose from "mongoose";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
+import "../models/Challenge";
+import { seed } from "./seed";
 dotenv.config();
 
 const uri = process.env.MONGODB_URI;
 if (!uri) throw new Error("No database defined");
-console.log("connect");
 
 const connection = mongoose.connect(uri);
-
 connection
   .then(() => {
     console.log("Initialization complete");
@@ -17,8 +17,10 @@ connection
     console.log(error.message);
   });
 
-mongoose.connection.on("connected", () => {
+mongoose.connection.on("connected", async () => {
   console.log("Mongoose default connection open");
+  await mongoose.connection.db?.dropDatabase();
+  await seed();
 });
 
 mongoose.connection.on("error", (error) => {

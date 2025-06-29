@@ -5,19 +5,15 @@ const COLLECTION_NAME = "submission";
 
 const schema = new Schema(
   {
-    challenge_id: {
-      type: Schema.Types.String,
-      required: true,
-    },
-    codeText_id: {
-      type: Schema.Types.String,
-      required: true,
-    },
-    coder_id: {
-      type: Schema.Types.String,
-      required: true,
-    },
     status: {
+      type: Schema.Types.String,
+      required: true,
+    },
+    lang: {
+      type: Schema.Types.String,
+      required: true,
+    },
+    code: {
       type: Schema.Types.String,
       required: true,
     },
