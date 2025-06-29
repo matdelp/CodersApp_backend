@@ -1,14 +1,28 @@
 import { model, Schema } from "mongoose";
-import { schemaProps as userSchemaProps } from "./User";
 
 const DOCUMENT_NAME = "Manager";
 const COLLECTION_NAME = "manager";
 
-const schemaProps = {
-  ...userSchemaProps,
-  user_id: {
+export const schemaProps = {
+  firstName: {
     type: Schema.Types.String,
     required: true,
+  },
+  lastName: {
+    type: Schema.Types.String,
+    required: true,
+  },
+  email: {
+    type: Schema.Types.String,
+    required: true,
+  },
+  password: {
+    type: Schema.Types.String,
+    required: true,
+  },
+  avatar: {
+    type: Schema.Types.String,
+    required: false,
   },
 };
 const schema = new Schema(schemaProps);

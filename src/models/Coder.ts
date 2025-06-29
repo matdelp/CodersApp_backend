@@ -1,15 +1,11 @@
 import { model, Schema } from "mongoose";
-import { schemaProps as userSchemaProps } from "./User";
+import { schemaProps as userSchemaProps } from "./Manager";
 
 const DOCUMENT_NAME = "Coder";
 const COLLECTION_NAME = "coder";
 
 const schemaProps = {
   ...userSchemaProps,
-  user_id: {
-    type: Schema.Types.String,
-    required: true,
-  },
   description: {
     type: Schema.Types.String,
     required: false,
