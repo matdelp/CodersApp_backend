@@ -16,6 +16,7 @@ export const managerSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
   avatar: Joi.string().uri().optional(),
+  challenges: Joi.array(),
 });
 
 export const loginSchema = Joi.object({

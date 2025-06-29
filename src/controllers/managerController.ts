@@ -2,9 +2,7 @@ import { Request, Response } from "express";
 import { managers } from "../data"; //fetch from db later
 import { loginSchema, managerSchema, updateSchema } from "../schema/schemaJoi";
 import { createToken, encryptPasword, validatePassword } from "../utils";
-
-
-
+import { ManagerModel } from "../models/Manager";
 
 //Register endpoint
 export const managerController = {
@@ -16,18 +14,20 @@ export const managerController = {
         return;
       }
       const { firstName, lastName, email, password, avatar } = value;
+      const checkEmail = await ManagerModel.findOne({ email });
+      if (checkEmail) throw new Error("email already used to register");
+
       const hashedPswd = await encryptPasword(password);
-      const newManager = {
-        _id: managers.length + 1, //simulate id generation before I have a db
+      const newManager = await ManagerModel.create({
         firstName: firstName,
         lastName: lastName,
         email: email,
         password: hashedPswd,
         avatar: avatar,
-      };
-      managers.push(newManager);
+      });
       res.status(201).json({
         message: `User ${firstName} ${lastName} created successfully`,
+        data: newManager._id,
       });
     } catch (error: any) {
       res.status(400).json({
