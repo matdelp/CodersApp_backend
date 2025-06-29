@@ -1,7 +1,13 @@
 import { Request, Response } from "express";
 import { managers } from "../data"; //fetch from db later
 import { loginSchema, managerSchema, updateSchema } from "../schema/schemaJoi";
-import { createToken, encryptPasword, validatePassword } from "../utils";
+import {
+  createToken,
+  createTokenForRegistration,
+  encryptPasword,
+  sendMail,
+  validatePassword,
+} from "../utils";
 import { ManagerModel } from "../models/Manager";
 
 //Register endpoint
@@ -27,6 +33,10 @@ export const managerController = {
         challenges: [],
         is_verified: false,
       });
+      const regId = newManager._id.toString();
+      const token = createTokenForRegistration(regId, "manager");
+
+      sendMail(email, firstName, token);
       res.status(201).json({
         message: `User ${firstName} ${lastName} created successfully`,
         data: newManager._id,
@@ -37,7 +47,7 @@ export const managerController = {
       });
     }
   },
-//not updated yet
+  //not updated yet
   //Login endpoint
   loginManager: async (req: Request, res: Response) => {
     try {
