@@ -1,16 +1,10 @@
 import { Request, Response } from "express";
-import { coders, managers } from "../data"; //fetch from db later
-import Joi from "joi";
+import { managers } from "../data"; //fetch from db later
+import { loginSchema, managerSchema, updateSchema } from "../schema/schemaJoi";
 import { createToken, encryptPasword, validatePassword } from "../utils";
-import { loginSchema, updateSchema } from "./coderController";
 
-const managerSchema = Joi.object({
-  firstName: Joi.string().min(2).required(),
-  lastName: Joi.string().min(2).required(),
-  email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
-  avatar: Joi.string().uri().optional(),
-});
+
+
 
 //Register endpoint
 export const managerController = {

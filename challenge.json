@@ -29,10 +29,10 @@
                 "inputs": [
                     {
                         "name": "n",
-                        "value": 6
+                        "value": "6"
                     }
                 ],
-                "output": 8
+                "output": "8"
             }
         ]
     },

@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
+import "./database/db";
 import { challengeRouter } from "./routes/challengeRoute";
 import { coderRouter } from "./routes/codersRoute";
 import { managerRouter } from "./routes/managerRoute";
