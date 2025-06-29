@@ -27,6 +27,10 @@ export const schema = new Schema({
   challenges: {
     type: [{ type: Schema.Types.ObjectId, ref: "Challenge" }],
   },
+  is_verified: {
+    type: Schema.Types.Boolean,
+    required: true,
+  },
 });
 
 export const ManagerModel = model(DOCUMENT_NAME, schema, COLLECTION_NAME);

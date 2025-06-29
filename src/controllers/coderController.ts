@@ -1,7 +1,14 @@
 import { Request, Response } from "express";
 import { coders } from "../data"; //fetch from db later
+import { CoderModel } from "../models/Coder";
 import { coderSchema, loginSchema, updateSchema } from "../schema/schemaJoi";
-import { createToken, encryptPasword, validatePassword } from "../utils";
+import {
+  createToken,
+  createTokenForRegistration,
+  encryptPasword,
+  sendMail,
+  validatePassword,
+} from "../utils";
 
 export const coderController = {
   createCoder: async (req: Request, res: Response) => {
@@ -13,20 +20,26 @@ export const coderController = {
       }
       const { firstName, lastName, email, password, avatar, description } =
         value;
+      const checkEmail = await CoderModel.findOne({ email });
+      if (checkEmail) throw new Error("email already used to register");
       const hashedPswd = await encryptPasword(password);
-      const newCoder = {
-        _id: coders.length + 1, //simulate id generation before I have a db
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
+      const newCoder = await CoderModel.create({
+        firstName,
+        lastName,
+        email,
         password: hashedPswd,
-        avatar: avatar,
-        description: description,
+        avatar,
+        description,
         score: 0,
-      };
-      coders.push(newCoder);
+        is_verified: false,
+      });
+      const regId = newCoder._id.toString();
+      const token = createTokenForRegistration(regId, "coder");
+
+      sendMail(email, firstName, token);
       res.status(201).json({
         message: `User ${firstName} ${lastName} created successfully`,
+        data: newCoder._id,
       });
     } catch (error: any) {
       res.status(400).json({
@@ -44,13 +57,13 @@ export const coderController = {
         res.status(400).json({ error: error.details[0].message });
         return;
       }
-      const coder = coders.find((coder) => coder.email === email);
+      const coder = await CoderModel.findOne({ email });
       if (!coder) throw new Error("Invalid Credentials");
-
+      if (!coder.is_verified) throw new Error("Email has not been verified");
       const isMatching = await validatePassword(password, coder.password);
       if (!isMatching) throw new Error("Invalid Credentials");
 
-      const token = createToken(coder);
+      const token = createToken(coder._id.toString(), email);
       res.status(200).json({
         message: `User ${email} logged in successfully`,
         token: token,
@@ -61,7 +74,7 @@ export const coderController = {
       });
     }
   },
-
+  //not updated yet
   getInfoCoder: async (req: Request, res: Response) => {
     const coderId = req.params.id;
     const coder = coders.find((coder) => coder._id === Number(coderId));

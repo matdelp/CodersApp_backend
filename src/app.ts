@@ -3,13 +3,14 @@ import express from "express";
 import "./database/db";
 import { challengeRouter } from "./routes/challengeRoute";
 import { coderRouter } from "./routes/codersRoute";
-import { managerRouter } from "./routes/managerRoute";
-import { submissionRouter } from "./routes/submissionRoute";
-import { leaderboardRouter } from "./routes/leaderboardRoute";
-import { topKCodersRouter } from "./routes/topKCodersRoute";
-import { solvedChallengesRouter } from "./routes/solvedChallengesRoute";
-import { trendingCategoriesRouter } from "./routes/trendingCategoriesRoute";
 import { heatmapRouter } from "./routes/heatmapRoute";
+import { leaderboardRouter } from "./routes/leaderboardRoute";
+import { managerRouter } from "./routes/managerRoute";
+import { solvedChallengesRouter } from "./routes/solvedChallengesRoute";
+import { submissionRouter } from "./routes/submissionRoute";
+import { topKCodersRouter } from "./routes/topKCodersRoute";
+import { trendingCategoriesRouter } from "./routes/trendingCategoriesRoute";
+import { verifyEmailRouter } from "./routes/verifyEmailRoute";
 dotenv.config();
 
 const app = express();
@@ -26,6 +27,7 @@ app.use("/topkcoders", topKCodersRouter);
 app.use("/solvedchallenges", solvedChallengesRouter);
 app.use("/trendingcategories", trendingCategoriesRouter);
 app.use("/heatmap", heatmapRouter);
+app.use("/api", verifyEmailRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello world");

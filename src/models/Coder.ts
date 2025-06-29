@@ -32,6 +32,10 @@ export const schema = new Schema({
     type: Schema.Types.String,
     required: true,
   },
+  is_verified: {
+    type: Schema.Types.Boolean,
+    required: true,
+  },
 });
 
 export const CoderModel = model(DOCUMENT_NAME, schema, COLLECTION_NAME);

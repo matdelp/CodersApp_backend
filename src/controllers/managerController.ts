@@ -1,12 +1,15 @@
 import { Request, Response } from "express";
 import { managers } from "../data"; //fetch from db later
 import { loginSchema, managerSchema, updateSchema } from "../schema/schemaJoi";
-import { createToken, encryptPasword, validatePassword } from "../utils";
+import {
+  createToken,
+  createTokenForRegistration,
+  encryptPasword,
+  sendMail,
+  validatePassword,
+} from "../utils";
+import { ManagerModel } from "../models/Manager";
 
-
-
-
-//Register endpoint
 export const managerController = {
   createManager: async (req: Request, res: Response) => {
     try {
@@ -16,18 +19,26 @@ export const managerController = {
         return;
       }
       const { firstName, lastName, email, password, avatar } = value;
+      const checkEmail = await ManagerModel.findOne({ email });
+      if (checkEmail) throw new Error("email already used to register");
+
       const hashedPswd = await encryptPasword(password);
-      const newManager = {
-        _id: managers.length + 1, //simulate id generation before I have a db
+      const newManager = await ManagerModel.create({
         firstName: firstName,
         lastName: lastName,
         email: email,
         password: hashedPswd,
         avatar: avatar,
-      };
-      managers.push(newManager);
+        challenges: [],
+        is_verified: false,
+      });
+      const regId = newManager._id.toString();
+      const token = createTokenForRegistration(regId, "manager");
+
+      sendMail(email, firstName, token);
       res.status(201).json({
         message: `User ${firstName} ${lastName} created successfully`,
+        data: newManager._id,
       });
     } catch (error: any) {
       res.status(400).json({
@@ -36,7 +47,6 @@ export const managerController = {
     }
   },
 
-  //Login endpoint
   loginManager: async (req: Request, res: Response) => {
     try {
       const { error, value } = loginSchema.validate(req.body);
@@ -45,11 +55,13 @@ export const managerController = {
         res.status(400).json({ error: error.details[0].message });
         return;
       }
-      const manager = managers.find((manager) => manager.email === email);
+      const manager = await ManagerModel.findOne({ email });
       if (!manager) throw new Error("Invalid Credentials");
+      if (!manager.is_verified) throw new Error("Email has not been verified");
       const isMatching = await validatePassword(password, manager.password);
       if (!isMatching) throw new Error("Invalid Credentials");
-      const token = createToken(manager);
+
+      const token = createToken(manager._id.toString(), email);
       res.status(200).json({
         message: `User ${email} logged in successfully`,
         token: token,
@@ -61,6 +73,7 @@ export const managerController = {
     }
   },
 
+  //not updated yet
   //Profile endpoint
   getInfoManager: async (req: Request, res: Response) => {
     try {
