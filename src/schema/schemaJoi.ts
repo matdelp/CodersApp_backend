@@ -40,7 +40,7 @@ export const challengeSchema = Joi.object({
   level: Joi.string().valid("Easy", "Moderate", "Hard").required(),
   code: Joi.object({
     function_name: Joi.string().required(),
-    codeText: Joi.array().items(
+    code_text: Joi.array().items(
       Joi.object({
         language: Joi.string().valid("py", "js").required(),
         content: Joi.string().required(),

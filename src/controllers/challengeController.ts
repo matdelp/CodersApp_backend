@@ -25,23 +25,24 @@ export const challengeController = {
         return;
       }
 
-      const newCodeText = await CodeTextModel.create(
-        code.code_text.map((text: any) => ({
-          language: text.language,
-          content: text.content,
-        }))
-      );
       const newInputs = await functionInputDefinitionModel.create(
         code.inputs.map((input: any) => ({
           name: input.name,
           type: input.type,
         }))
       );
+      const newCodeTexts = await CodeTextModel.create(
+        code.code_text.map((text: any) => ({
+          language: text.language,
+          content: text.content,
+        }))
+      );
       const newCode = await CodeModel.create({
         function_name: code.function_name,
-        codeText: newCodeText,
+        code_text: newCodeTexts,
         inputs: newInputs,
       });
+
       const newTests = await TestModel.create(
         await Promise.all(
           tests.map(async (test: any) => ({

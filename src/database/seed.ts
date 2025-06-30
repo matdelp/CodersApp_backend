@@ -30,6 +30,7 @@ const createManagers = async (challengeIds: String[]) => {
 const createChallenge = async () => {
   const challengeIds = [];
   for (const challenge of challenges) {
+    
     const texts = [];
     for (const text of challenge.code.code_text || []) {
       const newCodeText = await CodeTextModel.create(text);
