@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import { submissions } from "../seedData";
 
 const DOCUMENT_NAME = "Coder";
 const COLLECTION_NAME = "coder";
@@ -35,6 +36,10 @@ export const schema = new Schema({
   is_verified: {
     type: Schema.Types.Boolean,
     required: true,
+  },
+  submission: {
+    type: [{ type: Schema.Types.ObjectId, ref: "Submission" }],
+    default: [],
   },
 });
 

@@ -35,6 +35,7 @@ export const coderController = {
         description,
         score: 0,
         is_verified: false,
+        submissions: [],
       });
       const regId = newCoder._id.toString();
       const token = createTokenForRegistration(regId, "coder");

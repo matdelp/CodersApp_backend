@@ -16,6 +16,7 @@ type Manager = User & {
 export type Coder = User & {
   description?: string;
   score: number;
+  submissions: String[];
 };
 
 type Challenge = {
@@ -25,7 +26,7 @@ type Challenge = {
   level: "Easy" | "Moderate" | "Hard";
   code: Code;
   tests: Test[];
-  submissions: Submission[];
+  submissions: String[];
 };
 
 type Code = {
@@ -69,6 +70,7 @@ export const coders: Coder[] = [
     description: "Full-stack developer with a passion for open source.",
     score: 95,
     is_verified: true,
+    submissions: [],
   }, //token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjIzY2JkNDZiZWMxYTNhODYyNTdiNiIsImVtYWlsIjoiYWxpY2Uuam9obnNvbkBleGFtcGxlLmNvbSIsInJvbGUiOiJjb2RlciIsImlhdCI6MTc1MTI2OTYwOCwiZXhwIjoxNzUzODYxNjA4fQ.v67CNsxsbmtsCMb0AGygRcb5L-I6TgbHGQl9FvY7jEw
   {
     firstName: "Bob",
@@ -79,6 +81,7 @@ export const coders: Coder[] = [
     description: "Backend specialist and database enthusiast.",
     score: 88,
     is_verified: true,
+    submissions: [],
   },
 ];
 

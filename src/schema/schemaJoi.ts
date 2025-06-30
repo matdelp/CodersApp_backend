@@ -9,6 +9,13 @@ export const coderSchema = Joi.object({
   description: Joi.string().optional(),
   score: Joi.number().required(),
   is_verified: Joi.boolean().required(),
+  submissions: Joi.array().items(
+    Joi.object({
+      status: Joi.string().valid("Passed", "Failed").required(),
+      lang: Joi.string().required(),
+      code: Joi.string().required(),
+    })
+  ),
 });
 
 export const managerSchema = Joi.object({

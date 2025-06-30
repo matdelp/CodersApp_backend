@@ -7,6 +7,9 @@ import { functionInputDefinitionModel } from "../models/FunctionInputDefinition"
 import { CodeTextModel } from "../models/CodeText";
 import { FunctionInputValueModel } from "../models/FunctionInputValue";
 import { ManagerModel } from "../models/Manager";
+import "../models/Submission";
+import mongoose from "mongoose";
+import { CoderModel } from "../models/Coder";
 
 export const challengeController = {
   createChallenge: async (req: Request, res: Response) => {
@@ -73,7 +76,7 @@ export const challengeController = {
         level,
         code: newCode,
         tests: newTests,
-        submissions: []
+        submissions: [],
       });
 
       const challengeId = newChallenge._id;
@@ -107,10 +110,25 @@ export const challengeController = {
         res.status(404).json({ message: "Manager not found" });
         return;
       }
+
       const challenges = await ChallengeModel.find({
         _id: { $in: manager.challenges },
         ...filter,
+      }).populate({
+        path: "submission",
+        select: "status _id",
       });
+
+      //  for (const challenge of challenges) {
+      //     const submissions = await SubmissionModel.find({
+      //       _id: { $in: challenge.submission },
+      //     });
+      //     const numpassed = submissions.filter(
+      //       (e) => e.status === "Passed"
+      //     ).length;
+      //     const rate=numpassed/submissions.length
+      //   }
+
       res.status(200).json(challenges);
       return;
     } catch (error: any) {
@@ -137,19 +155,17 @@ export const challengeController = {
   //     }
   //   },
 
-  //   getAllCategories: async (req: Request, res: Response) => {
-  //     try {
-  //       const categories = Array.from(
-  //         new Set(challenges.map((challenge) => challenge.category))
-  //       );
-  //       res.status(200).json({
-  //         message: "Challenge categories",
-  //         data: categories,
-  //       });
-  //     } catch (error: any) {
-  //       res.status(400).json({
-  //         message: error.message,
-  //       });
-  //     }
-  //   },
+  getAllCategories: async (req: Request, res: Response) => {
+    try {
+      const challenges = await ChallengeModel.find();
+      const categories = Array.from(
+        new Set(challenges.map((challenge) => challenge.category))
+      );
+      res.status(200).json(categories);
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message,
+      });
+    }
+  },
 };

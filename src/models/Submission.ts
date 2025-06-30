@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 
-const DOCUMENT_NAME = "Submission";
+export const DOCUMENT_NAME = "Submission";
 const COLLECTION_NAME = "submission";
 
 const schema = new Schema(
