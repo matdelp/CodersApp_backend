@@ -157,10 +157,7 @@ export const challengeController = {
 
   getAllCategories: async (req: Request, res: Response) => {
     try {
-      const challenges = await ChallengeModel.find();
-      const categories = Array.from(
-        new Set(challenges.map((challenge) => challenge.category))
-      );
+      const categories = await ChallengeModel.distinct("category");
       res.status(200).json(categories);
     } catch (error: any) {
       res.status(400).json({
