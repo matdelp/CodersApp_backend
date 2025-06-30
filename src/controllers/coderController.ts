@@ -21,7 +21,10 @@ export const coderController = {
       const { firstName, lastName, email, password, avatar, description } =
         value;
       const checkEmail = await CoderModel.findOne({ email });
-      if (checkEmail) throw new Error("email already used to register");
+      if (checkEmail) {
+        res.status(400).json({ message: "email already used to register" });
+        return;
+      }
       const hashedPswd = await encryptPasword(password);
       const newCoder = await CoderModel.create({
         firstName,

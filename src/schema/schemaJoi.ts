@@ -39,7 +39,7 @@ export const challengeSchema = Joi.object({
   description: Joi.string().required(),
   level: Joi.string().valid("Easy", "Moderate", "Hard").required(),
   code: Joi.object({
-    functionName: Joi.string().required(),
+    function_name: Joi.string().required(),
     codeText: Joi.array().items(
       Joi.object({
         language: Joi.string().valid("py", "js").required(),
@@ -48,21 +48,21 @@ export const challengeSchema = Joi.object({
     ),
     inputs: Joi.array().items(
       Joi.object({
-        inputName: Joi.string().required(),
-        inputType: Joi.string().required(),
+        name: Joi.string().required(),
+        type: Joi.string().required(),
       })
     ),
   }),
   tests: Joi.array().items(
     Joi.object({
       weight: Joi.number().min(0).max(1).required(),
-      testInputs: Joi.array().items(
+      inputs: Joi.array().items(
         Joi.object({
-          testInputName: Joi.string().required(),
-          testInputValue: Joi.number().required(),
+          name: Joi.string().required(),
+          value: Joi.string().required(),
         })
       ),
-      testOutput: Joi.string().required(),
+      outputs: Joi.string().required(),
     })
   ),
 });

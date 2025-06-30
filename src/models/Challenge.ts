@@ -23,7 +23,7 @@ const schema = new Schema({
   },
 
   code: {
-    type: { type: Schema.Types.ObjectId, ref: "Code" },
+    type: [{ type: Schema.Types.ObjectId, ref: "Code" }],
     default: {},
   },
   tests: {
