@@ -67,7 +67,7 @@ export const coders: Coder[] = [
     description: "Full-stack developer with a passion for open source.",
     score: 95,
     is_verified: true,
-  },
+  }, //token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjIzY2JkNDZiZWMxYTNhODYyNTdiNiIsImVtYWlsIjoiYWxpY2Uuam9obnNvbkBleGFtcGxlLmNvbSIsInJvbGUiOiJjb2RlciIsImlhdCI6MTc1MTI2OTYwOCwiZXhwIjoxNzUzODYxNjA4fQ.v67CNsxsbmtsCMb0AGygRcb5L-I6TgbHGQl9FvY7jEw
   {
     firstName: "Bob",
     lastName: "Smith",
@@ -143,6 +143,7 @@ export const managers: Manager[] = [
     avatar: "https://randomuser.me/api/portraits/women/10.jpg",
     challenges: [],
     is_verified: true,
+    //"token": eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjIzY2JlNDZiZWMxYTNhODYyNTdjOCIsImVtYWlsIjoic29waGllLmR1cG9udEBleGFtcGxlLmNvbSIsInJvbGUiOiJtYW5hZ2VyIiwiaWF0IjoxNzUxMjcwMjUzLCJleHAiOjE3NTM4NjIyNTN9.fImwNOQPG0jMgKLaJXULDVFFwVnl7bL06yA9SmjEAcs
   },
   {
     firstName: "Lucas",
@@ -152,6 +153,7 @@ export const managers: Manager[] = [
     avatar: "https://randomuser.me/api/portraits/men/11.jpg",
     challenges: [],
     is_verified: true,
+    //"token": eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjIzY2JlNDZiZWMxYTNhODYyNTdjYSIsImVtYWlsIjoibHVjYXMubWFydGluQGV4YW1wbGUuY29tIiwicm9sZSI6Im1hbmFnZXIiLCJpYXQiOjE3NTEyNzAzOTksImV4cCI6MTc1Mzg2MjM5OX0.JduzbYSVrO2LFTCFZ9GvNYTqNi4P5ElIWyg7GdXU29o
   },
 ];
 export const submissions: Submission[] = [

@@ -15,11 +15,12 @@ export const validatePassword = async (inputPswd: string, password: string) => {
   return crypt;
 };
 
-export const createToken = (id: string, email: string) => {
+export const createToken = (id: string, email: string, role:string) => {
   if (!process.env.JWT_SECRET) {
     throw new Error("JWT_SECRET is not defined in environment variables");
   }
-  const jwtToken = jwt.sign({ id, email }, process.env.JWT_SECRET as string, {
+
+  const jwtToken = jwt.sign({ id, email, role: role }, process.env.JWT_SECRET as string, {
     expiresIn: "30d",
   });
   return jwtToken;

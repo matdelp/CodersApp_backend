@@ -66,7 +66,7 @@ export const coderController = {
       const isMatching = await validatePassword(password, coder.password);
       if (!isMatching) throw new Error("Invalid Credentials");
 
-      const token = createToken(coder._id.toString(), email);
+      const token = createToken(coder._id.toString(), email, "coder");
       res.status(200).json({
         message: `User ${email} logged in successfully`,
         token: token,

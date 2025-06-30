@@ -61,7 +61,7 @@ export const managerController = {
       const isMatching = await validatePassword(password, manager.password);
       if (!isMatching) throw new Error("Invalid Credentials");
 
-      const token = createToken(manager._id.toString(), email);
+      const token = createToken(manager._id.toString(), email, "manager");
       res.status(200).json({
         message: `User ${email} logged in successfully`,
         token: token,
