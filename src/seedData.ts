@@ -28,7 +28,7 @@ type Challenge = {
 
 type Code = {
   function_name: string;
-  codeText: CodeText[];
+  code_text: CodeText[];
   inputs: Input[];
 };
 
@@ -99,7 +99,7 @@ and the factorial of \`n-1\`.`,
     level: "Hard",
     code: {
       function_name: "factorial",
-      codeText: [
+      code_text: [
         {
           language: "py",
           content: "def factorial(n):\n return 1",
