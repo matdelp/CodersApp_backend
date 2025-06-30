@@ -30,7 +30,12 @@ const createManagers = async (challengeIds: String[]) => {
 const createChallenge = async () => {
   const challengeIds = [];
   for (const challenge of challenges) {
-    const codeText = await CodeTextModel.create(challenge.code.codeText);
+    const texts = [];
+    for (const text of challenge.code.code_text || []) {
+      const newCodeText = await CodeTextModel.create(text);
+      texts.push(newCodeText);
+    }
+
     const inputs = [];
     for (const input of challenge.code.inputs || []) {
       const newInput = await functionInputDefinitionModel.create(input);
@@ -38,7 +43,7 @@ const createChallenge = async () => {
     }
     const code = await CodeModel.create({
       function_name: challenge.code.function_name,
-      codeText: codeText,
+      code_text: texts,
       inputs: inputs,
     });
 
