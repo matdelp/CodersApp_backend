@@ -73,6 +73,7 @@ export const challengeController = {
         level,
         code: newCode,
         tests: newTests,
+        submissions: []
       });
 
       const challengeId = newChallenge._id;

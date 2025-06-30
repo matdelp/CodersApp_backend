@@ -67,4 +67,11 @@ export const challengeSchema = Joi.object({
       outputs: Joi.string().required(),
     })
   ),
+  submissions: Joi.array().items(
+    Joi.object({
+      status: Joi.string().valid("Passed", "Failed").required(),
+      lang: Joi.string().required(),
+      code: Joi.string().required(),
+    })
+  ),
 });

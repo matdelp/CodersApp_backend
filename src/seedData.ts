@@ -25,6 +25,7 @@ type Challenge = {
   level: "Easy" | "Moderate" | "Hard";
   code: Code;
   tests: Test[];
+  submissions: Submission[];
 };
 
 type Code = {
@@ -57,6 +58,7 @@ type Submission = {
   lang: "py" | "js";
   code: string;
 };
+
 export const coders: Coder[] = [
   {
     firstName: "Alice",
@@ -131,6 +133,7 @@ and the factorial of \`n-1\`.`,
         outputs: "120",
       },
     ],
+    submissions: [],
   },
 ];
 
@@ -160,6 +163,11 @@ export const submissions: Submission[] = [
   {
     status: "Passed",
     lang: "py",
+    code: "def factorial(n):\n\tif n == 0: return 2 \n\treturn n *factorial(n-1)",
+  },
+  {
+    status: "Failed",
+    lang: "js",
     code: "def factorial(n):\n\tif n == 0: return 2 \n\treturn n *factorial(n-1)",
   },
 ];

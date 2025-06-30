@@ -30,6 +30,10 @@ const schema = new Schema({
     type: [{ type: Schema.Types.ObjectId, ref: "Test" }],
     default: [],
   },
+    submissions: {
+    type: [{ type: Schema.Types.ObjectId, ref: "Submission" }],
+    default: [],
+  },
 });
 
 export const ChallengeModel = model(DOCUMENT_NAME, schema, COLLECTION_NAME);
