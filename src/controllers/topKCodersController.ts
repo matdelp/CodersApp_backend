@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Joi from "joi";
-import { topKcoders } from "../data"; //fetch from db later
+
 import { CoderModel } from "../models/Coder";
 
 const topkcodersSchema = Joi.object({
