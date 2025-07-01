@@ -1,5 +1,4 @@
 import { model, Schema } from "mongoose";
-import { submissions } from "../seedData";
 
 const DOCUMENT_NAME = "Coder";
 const COLLECTION_NAME = "coder";
@@ -30,7 +29,7 @@ export const schema = new Schema({
     required: false,
   },
   score: {
-    type: Schema.Types.String,
+    type: Schema.Types.Number,
     required: true,
   },
   is_verified: {

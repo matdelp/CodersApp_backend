@@ -17,6 +17,14 @@ const schema = new Schema(
       type: Schema.Types.String,
       required: true,
     },
+    challenge_id: {
+      type: Schema.Types.ObjectId,
+      ref: "Challenge",
+    },
+    coder_id: {
+      type: Schema.Types.ObjectId,
+      ref: "Coder",
+    },
   },
   { timestamps: true }
 );

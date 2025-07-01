@@ -1,7 +1,10 @@
+import axios from "axios";
 import { Request, Response } from "express";
-import { coders } from "../data"; //fetch from db later
+import { ChallengeModel } from "../models/Challenge";
 import { CoderModel } from "../models/Coder";
-import { coderSchema, loginSchema, updateSchema } from "../schema/schemaJoi";
+import { SubmissionModel } from "../models/Submission";
+import { coderSchema, loginSchema } from "../schema/schemaJoi";
+import { ComputePostBody } from "../types";
 import {
   createToken,
   createTokenForRegistration,
@@ -9,6 +12,7 @@ import {
   sendMail,
   validatePassword,
 } from "../utils";
+const CODE_RUNNER_URL = "https://runlang-v1.onrender.com/run";
 
 export const coderController = {
   createCoder: async (req: Request, res: Response) => {
@@ -35,7 +39,7 @@ export const coderController = {
         description,
         score: 0,
         is_verified: false,
-        submissions: [],
+        submission: [],
       });
       const regId = newCoder._id.toString();
       const token = createTokenForRegistration(regId, "coder");
@@ -78,39 +82,130 @@ export const coderController = {
       });
     }
   },
+  submitCode: async (req: Request, res: Response) => {
+    try {
+      const { id: userId, role } = (req as any).user;
+      const { challengeId, code, lang, func_name } = req.body;
+      if (role === "manager") {
+        res.status(403).json("User must be coder to submit a solution");
+        return;
+      }
+
+      const coder = await CoderModel.findById(userId).populate("submission");
+      if (!coder) return res.status(404).json({ message: "Coder not found" });
+
+      const challengeSolved = coder.submission.find(
+        (submissionItem: any) =>
+          submissionItem.challenge_id.toString() === challengeId &&
+          submissionItem.status === "passed"
+      );
+      if (challengeSolved) {
+        return res.status(409).json({ message: "Challenge already solved" });
+      }
+
+      const selectedChallenge = await ChallengeModel.findById(
+        challengeId
+      ).populate({
+        path: "test",
+        populate: {
+          path: "inputs",
+          model: "FunctionInputValue",
+        },
+      });
+
+      if (!selectedChallenge)
+        return res.status(404).json({ message: "Challenge not found" });
+      const submission = await SubmissionModel.create({
+        status: "submitted",
+        lang,
+        code,
+        challenge_id: challengeId,
+        coder_id: userId,
+      });
+      await CoderModel.findByIdAndUpdate(userId, {
+        $push: { submission: submission._id },
+      });
+
+      await ChallengeModel.findByIdAndUpdate(challengeId, {
+        $push: { submission: submission._id },
+      });
+      const subBody: ComputePostBody = {
+        lang,
+        code,
+        func_name,
+        tests: selectedChallenge.test.map((test: any) => ({
+          _id: test._id.toString(),
+          inputs: test.inputs.map((input: any) => ({
+            value: Number(input.value),
+          })),
+          output: Number(test.outputs),
+        })),
+      };
+
+      let runnerRes;
+      try {
+        runnerRes = await axios.post(CODE_RUNNER_URL, subBody);
+      } catch (error: any) {
+        return res.status(418).json({ message: error.message });
+      }
+      const { status, test_results } = runnerRes!.data;
+
+      await SubmissionModel.findByIdAndUpdate(submission._id, {
+        status: status,
+      });
+      if (status === "passed") {
+        const score = selectedChallenge.test.reduce((acc, test: any) => {
+          return acc + 100 * test.weight;
+        }, 0);
+
+        await CoderModel.findByIdAndUpdate(coder._id, {
+          score: score + coder.score,
+        });
+      }
+
+      return res.status(200).json({
+        message: `Challenge sumbmitted, result: ${status}`,
+        data: test_results,
+      });
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message,
+      });
+    }
+  },
   //not updated yet
-  getInfoCoder: async (req: Request, res: Response) => {
-    const coderId = req.params.id;
-    const coder = coders.find((coder) => coder._id === Number(coderId));
+  // getInfoCoder: async (req: Request, res: Response) => {
+  //   const coderId = req.params.id;
+  //   const coder = coders.find((coder) => coder._id === Number(coderId));
 
-    if (!coder) {
-      res.status(404).json({ error: "User not found" });
-      return;
-    }
-    res.status(200).json(coder);
-  },
+  //   if (!coder) {
+  //     res.status(404).json({ error: "User not found" });
+  //     return;
+  //   }
+  //   res.status(200).json(coder);
+  // },
 
-  updateInfoCoder: async (req: Request, res: Response) => {
-    const { error, value } = updateSchema.validate(req.body);
-    if (error) {
-      res.status(400).json({ error: error.details[0].message });
-      return;
-    }
-    const { firstName, lastName, avatar, description } = value;
-    const coderId = req.params.id;
-    const coder = coders.find((coder) => coder._id === Number(coderId));
-    if (!coder) {
-      res.status(404).json({ error: "User not found" });
-      return;
-    }
-    coder.firstName = firstName;
-    coder.lastName = lastName;
-    coder.avatar = avatar;
-    coder.description = description;
+  // updateInfoCoder: async (req: Request, res: Response) => {
+  //   const { error, value } = updateSchema.validate(req.body);
+  //   if (error) {
+  //     res.status(400).json({ error: error.details[0].message });
+  //     return;
+  //   }
+  //   const { firstName, lastName, avatar, description } = value;
+  //   const coderId = req.params.id;
+  //   const coder = coders.find((coder) => coder._id === Number(coderId));
+  //   if (!coder) {
+  //     res.status(404).json({ error: "User not found" });
+  //     return;
+  //   }
+  //   coder.firstName = firstName;
+  //   coder.lastName = lastName;
+  //   coder.avatar = avatar;
+  //   coder.description = description;
 
-    res.status(200).json({
-      message: `${firstName}'s profile updated successfully`,
-      coder: coder,
-    });
-  },
+  //   res.status(200).json({
+  //     message: `${firstName}'s profile updated successfully`,
+  //     coder: coder,
+  //   });
+  // },
 };

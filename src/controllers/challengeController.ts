@@ -1,15 +1,13 @@
 import { Request, Response } from "express";
-import { challengeSchema } from "../schema/schemaJoi";
 import { ChallengeModel } from "../models/Challenge";
 import { CodeModel } from "../models/Code";
-import { TestModel } from "../models/TestCase";
-import { functionInputDefinitionModel } from "../models/FunctionInputDefinition";
 import { CodeTextModel } from "../models/CodeText";
+import { functionInputDefinitionModel } from "../models/FunctionInputDefinition";
 import { FunctionInputValueModel } from "../models/FunctionInputValue";
 import { ManagerModel } from "../models/Manager";
 import "../models/Submission";
-import mongoose from "mongoose";
-import { CoderModel } from "../models/Coder";
+import { TestModel } from "../models/TestCase";
+import { challengeSchema } from "../schema/schemaJoi";
 
 export const challengeController = {
   createChallenge: async (req: Request, res: Response) => {
@@ -24,7 +22,7 @@ export const challengeController = {
         res.status(400).json({ error: error.details[0].message });
         return;
       }
-      const { title, category, description, level, code, tests } = value;
+      const { title, category, description, level, code, test } = value;
 
       const checkTitle = await ChallengeModel.findOne({ title });
       if (checkTitle) {
@@ -56,7 +54,7 @@ export const challengeController = {
 
       const newTests = await TestModel.create(
         await Promise.all(
-          tests.map(async (test: any) => ({
+          test.map(async (test: any) => ({
             weight: test.weight,
             inputs: await FunctionInputValueModel.create(
               test.inputs.map((input: any) => ({
@@ -75,7 +73,7 @@ export const challengeController = {
         description,
         level,
         code: newCode,
-        tests: newTests,
+        test: newTests,
         submissions: [],
       });
 

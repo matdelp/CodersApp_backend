@@ -73,6 +73,7 @@ export const managerController = {
     }
   },
 
+  //TODO
   //not updated yet
   //Profile endpoint
   getInfoManager: async (req: Request, res: Response) => {

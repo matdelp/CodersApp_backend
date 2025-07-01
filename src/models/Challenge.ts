@@ -26,11 +26,11 @@ const schema = new Schema({
     type: [{ type: Schema.Types.ObjectId, ref: "Code" }],
     default: {},
   },
-  tests: {
+  test: {
     type: [{ type: Schema.Types.ObjectId, ref: "Test" }],
     default: [],
   },
-    submission: {
+  submission: {
     type: [{ type: Schema.Types.ObjectId, ref: "Submission" }],
     default: [],
   },

@@ -9,9 +9,9 @@ export const coderSchema = Joi.object({
   description: Joi.string().optional(),
   score: Joi.number().required(),
   is_verified: Joi.boolean().required(),
-  submissions: Joi.array().items(
+  submission: Joi.array().items(
     Joi.object({
-      status: Joi.string().valid("Passed", "Failed").required(),
+      status: Joi.string().valid("passed", "failed").required(),
       lang: Joi.string().required(),
       code: Joi.string().required(),
     })
@@ -24,7 +24,7 @@ export const managerSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
   avatar: Joi.string().uri().optional(),
-  challenges: Joi.array(),
+  challenge: Joi.array(),
   is_verified: Joi.boolean().required(),
 });
 
@@ -62,7 +62,7 @@ export const challengeSchema = Joi.object({
       ),
     })
   ),
-  tests: Joi.array().items(
+  test: Joi.array().items(
     Joi.object({
       weight: Joi.number().min(0).max(1).required(),
       inputs: Joi.array().items(
@@ -76,9 +76,10 @@ export const challengeSchema = Joi.object({
   ),
   submissions: Joi.array().items(
     Joi.object({
-      status: Joi.string().valid("Passed", "Failed").required(),
+      status: Joi.string().valid("passed", "failed", "submitted").required(),
       lang: Joi.string().required(),
       code: Joi.string().required(),
+      challenge_id: Joi.string().required(),
     })
   ),
 });
