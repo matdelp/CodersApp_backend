@@ -19,8 +19,9 @@ connection
 
 mongoose.connection.on("connected", async () => {
   console.log("Mongoose default connection open");
-  await mongoose.connection.db?.dropDatabase();
-  await seed();
+  // TODO: uncomment when finish testing
+  // await mongoose.connection.db?.dropDatabase();
+  // await seed();
 });
 
 mongoose.connection.on("error", (error) => {

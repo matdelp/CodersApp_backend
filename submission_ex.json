@@ -1,0 +1,22 @@
+{
+  "lang": "js",
+  "code": "function factorial(n) {\n if (n === 0) return 1;\n return n * factorial(n - 1);\n}",
+  "func_name": "factorial",
+  "tests": [
+    {
+      "_id": "1234654654654d",
+      "inputs": [{ "value": 1 }],
+      "output": 1
+    },
+    {
+      "_id": "1234654654654",
+      "inputs": [{ "value": 5 }],
+      "output": 120
+    },
+    {
+      "_id": "12346546544d",
+      "inputs": [{ "value": 4 }],
+      "output": 24
+    }
+  ]
+}

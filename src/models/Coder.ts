@@ -29,12 +29,16 @@ export const schema = new Schema({
     required: false,
   },
   score: {
-    type: Schema.Types.String,
+    type: Schema.Types.Number,
     required: true,
   },
   is_verified: {
     type: Schema.Types.Boolean,
     required: true,
+  },
+  submission: {
+    type: [{ type: Schema.Types.ObjectId, ref: "Submission" }],
+    default: [],
   },
 });
 

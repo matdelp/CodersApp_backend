@@ -16,6 +16,7 @@ type Manager = User & {
 export type Coder = User & {
   description?: string;
   score: number;
+  submission: String[];
 };
 
 type Challenge = {
@@ -23,8 +24,9 @@ type Challenge = {
   category: string;
   description: string;
   level: "Easy" | "Moderate" | "Hard";
-  code: Code;
-  tests: Test[];
+  code: Code[];
+  test: Test[];
+  submission: String[];
 };
 
 type Code = {
@@ -57,6 +59,7 @@ type Submission = {
   lang: "py" | "js";
   code: string;
 };
+
 export const coders: Coder[] = [
   {
     firstName: "Alice",
@@ -67,7 +70,8 @@ export const coders: Coder[] = [
     description: "Full-stack developer with a passion for open source.",
     score: 95,
     is_verified: true,
-  },
+    submission: [],
+  }, //token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM3N2MyYWJhNDdiNjk4MGQ5MTQ4OCIsImVtYWlsIjoiYWxpY2Uuam9obnNvbkBleGFtcGxlLmNvbSIsInJvbGUiOiJjb2RlciIsImlhdCI6MTc1MTM1MDQzNywiZXhwIjoxNzUzOTQyNDM3fQ.mjfjhw0FsPsrs3sE6RQLMqfjif_K7_valZ_gVGy7ess
   {
     firstName: "Bob",
     lastName: "Smith",
@@ -77,14 +81,14 @@ export const coders: Coder[] = [
     description: "Backend specialist and database enthusiast.",
     score: 88,
     is_verified: true,
+    submission: [],
   },
 ];
 
-export const challenges: Challenge[] = [
-  {
-    title: "factorial",
-    category: "Math",
-    description: `### Problem Statement:\nCompute the factorial of a
+export const challenge: Challenge = {
+  title: "factorial",
+  category: "Math",
+  description: `### Problem Statement:\nCompute the factorial of a
 non-negative integer \`n\`, denoted as \`n!\`. The factorial of \`n\` is the product
 of all positive integers less than or equal to \`n\`.\n\n### Example:\nFor
 example, the factorial of \`5\` is \`5! = 5 * 4 * 3 * 2 * 1 = 120\`.\n\n###
@@ -99,8 +103,9 @@ non-negative integer \`n\` as input and returns its factorial. In the function,
 we handle the base case when \`n\` is \`0\` or \`1\`, and recursively call
 \`factorial(n-1)\` for other values of \`n\`. Finally, we return the product of \`n\`
 and the factorial of \`n-1\`.`,
-    level: "Hard",
-    code: {
+  level: "Hard",
+  code: [
+    {
       function_name: "factorial",
       code_text: [
         {
@@ -119,20 +124,21 @@ and the factorial of \`n-1\`.`,
         },
       ],
     },
-    tests: [
-      {
-        weight: 0.8,
-        inputs: [
-          {
-            name: "n",
-            value: "5",
-          },
-        ],
-        outputs: "120",
-      },
-    ],
-  },
-];
+  ],
+  test: [
+    {
+      weight: 0.8,
+      inputs: [
+        {
+          name: "n",
+          value: "5",
+        },
+      ],
+      outputs: "120",
+    },
+  ],
+  submission: [],
+};
 
 export const managers: Manager[] = [
   {
@@ -143,6 +149,7 @@ export const managers: Manager[] = [
     avatar: "https://randomuser.me/api/portraits/women/10.jpg",
     challenges: [],
     is_verified: true,
+    //"token": eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjIzY2JlNDZiZWMxYTNhODYyNTdjOCIsImVtYWlsIjoic29waGllLmR1cG9udEBleGFtcGxlLmNvbSIsInJvbGUiOiJtYW5hZ2VyIiwiaWF0IjoxNzUxMjcwMjUzLCJleHAiOjE3NTM4NjIyNTN9.fImwNOQPG0jMgKLaJXULDVFFwVnl7bL06yA9SmjEAcs
   },
   {
     firstName: "Lucas",
@@ -152,15 +159,21 @@ export const managers: Manager[] = [
     avatar: "https://randomuser.me/api/portraits/men/11.jpg",
     challenges: [],
     is_verified: true,
+    //"token": eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjIzY2JlNDZiZWMxYTNhODYyNTdjYSIsImVtYWlsIjoibHVjYXMubWFydGluQGV4YW1wbGUuY29tIiwicm9sZSI6Im1hbmFnZXIiLCJpYXQiOjE3NTEyNzAzOTksImV4cCI6MTc1Mzg2MjM5OX0.JduzbYSVrO2LFTCFZ9GvNYTqNi4P5ElIWyg7GdXU29o
   },
 ];
-export const submissions: Submission[] = [
-  {
-    status: "Passed",
-    lang: "py",
-    code: "def factorial(n):\n\tif n == 0: return 2 \n\treturn n *factorial(n-1)",
-  },
-];
+// export const submissions: Submission[] = [
+//   {
+//     status: "Passed",
+//     lang: "py",
+//     code: "def factorial(n):\n\tif n == 0: return 2 \n\treturn n *factorial(n-1)",
+//   },
+//   {
+//     status: "Failed",
+//     lang: "js",
+//     code: "def factorial(n):\n\tif n == 0: return 2 \n\treturn n *factorial(n-1)",
+//   },
+// ];
 
 export const leaderboard: Coder[] = [];
 
