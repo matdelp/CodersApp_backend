@@ -5,7 +5,11 @@ import mongoose from "mongoose";
 export const trendingCategoriesController = {
   getTrendingCategoriesbyUser: async (req: Request, res: Response) => {
     try {
-      const { id: userId } = (req as any).user;
+      const { id: userId, role } = (req as any).user;
+      if (role !== "coder") {
+        res.status(403).json("User must be coder to see this content");
+        return;
+      }
       const coderId = new mongoose.Types.ObjectId(userId as string);
 
       const trendingCategories = await CoderModel.aggregate([
