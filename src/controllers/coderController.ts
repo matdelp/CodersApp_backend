@@ -172,7 +172,6 @@ export const coderController = {
       });
     }
   },
-
   getCoderProfile: async (req: Request, res: Response) => {
     const { id: userId } = (req as any).user;
 
