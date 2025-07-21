@@ -6,7 +6,7 @@ import { functionInputDefinitionModel } from "../models/FunctionInputDefinition"
 import { FunctionInputValueModel } from "../models/FunctionInputValue";
 import { ManagerModel } from "../models/Manager";
 import "../models/Submission";
-import { TestModel } from "../models/TestCase";
+import { TestModel } from "../models/Test";
 import { challengeSchema } from "../schema/schemaJoi";
 
 export const challengeController = {

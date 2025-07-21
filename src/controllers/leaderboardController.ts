@@ -15,7 +15,6 @@ export const leaderboardController = {
           path: "submission",
           match: { status: "passed" },
         });
-      console.log(coders);
 
       res.status(200).json({ data: coders });
     } catch (error: any) {
