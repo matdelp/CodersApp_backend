@@ -86,37 +86,29 @@ export const managerController = {
     res.status(200).json(manager);
   },
 
-  //TODO
-  //not updated yet
-  //Update Profile endpoint
-  // updateInfoManager: async (req: Request, res: Response) => {
-  //   try {
-  //     const { error, value } = updateSchema.validate(req.body);
-  //     if (error) {
-  //       res.status(400).json({ error: error.details[0].message });
-  //       return;
-  //     }
-  //     const { firstName, lastName, avatar } = value;
-  //     const managerId = req.params.id;
-  //     const manager = managers.find(
-  //       (manager) => manager._id === Number(managerId)
-  //     );
-  //     if (!manager) {
-  //       res.status(404).json({ error: "User not found" });
-  //       return;
-  //     }
-  //     manager.firstName = firstName;
-  //     manager.lastName = lastName;
-  //     manager.avatar = avatar;
+  updateProfileManager: async (req: Request, res: Response) => {
+    try {
+      const { error, value } = updateSchema.validate(req.body);
+      if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+      }
 
-  //     res.status(200).json({
-  //       message: `${firstName}'s profile updated successfully`,
-  //       manager: manager,
-  //     });
-  //   } catch (error: any) {
-  //     res.status(400).json({
-  //       message: error.message,
-  //     });
-  //   }
-  // },
+      const { firstName, lastName } = value;
+      const { id: userId } = (req as any).user;
+
+      const manager = await ManagerModel.findById(userId);
+      if (!manager) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      manager.firstName = firstName;
+      manager.lastName = lastName;
+
+      await manager.save();
+
+      res.status(200).json(manager);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  },
 };
