@@ -38,7 +38,7 @@ export const updateSchema = Joi.object({
   lastName: Joi.string().min(2).optional(),
   avatar: Joi.string().uri().optional(),
   description: Joi.string().optional(),
-});
+}).min(1);
 
 export const challengeSchema = Joi.object({
   title: Joi.string().min(2).required(),

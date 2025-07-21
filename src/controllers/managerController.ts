@@ -93,7 +93,6 @@ export const managerController = {
         return res.status(400).json({ error: error.details[0].message });
       }
 
-      const { firstName, lastName } = value;
       const { id: userId } = (req as any).user;
 
       const manager = await ManagerModel.findById(userId);
@@ -101,9 +100,8 @@ export const managerController = {
         return res.status(404).json({ error: "User not found" });
       }
 
-      manager.firstName = firstName;
-      manager.lastName = lastName;
-
+      if (value.firstName !== undefined) manager.firstName = value.firstName;
+      if (value.lastName !== undefined) manager.lastName = value.lastName;
       await manager.save();
 
       res.status(200).json(manager);

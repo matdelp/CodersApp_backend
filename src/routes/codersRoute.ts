@@ -8,5 +8,4 @@ coderRouter.post("/register", coderController.createCoder);
 coderRouter.post("/login", coderController.loginCoder);
 coderRouter.post("/submit", auth, coderController.submitCode);
 coderRouter.get("/profile", auth, coderController.getCoderProfile);
-//TODO
-// coderRouter.patch("/profile/update/:id", coderController.updateInfoCoder);
+coderRouter.patch("/update", auth, coderController.updateProfileCoder);

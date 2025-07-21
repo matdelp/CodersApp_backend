@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { ChallengeModel } from "../models/Challenge";
 import { CoderModel } from "../models/Coder";
 import { SubmissionModel } from "../models/Submission";
-import { coderSchema, loginSchema } from "../schema/schemaJoi";
+import { coderSchema, loginSchema, updateSchema } from "../schema/schemaJoi";
 import { ComputePostBody } from "../types";
 import {
   createToken,
@@ -192,28 +192,30 @@ export const coderController = {
     });
   },
 
-  //not updated yet
-  // updateInfoCoder: async (req: Request, res: Response) => {
-  //   const { error, value } = updateSchema.validate(req.body);
-  //   if (error) {
-  //     res.status(400).json({ error: error.details[0].message });
-  //     return;
-  //   }
-  //   const { firstName, lastName, avatar, description } = value;
-  //   const coderId = req.params.id;
-  //   const coder = coders.find((coder) => coder._id === Number(coderId));
-  //   if (!coder) {
-  //     res.status(404).json({ error: "User not found" });
-  //     return;
-  //   }
-  //   coder.firstName = firstName;
-  //   coder.lastName = lastName;
-  //   coder.avatar = avatar;
-  //   coder.description = description;
+  updateProfileCoder: async (req: Request, res: Response) => {
+    try {
+      const { error, value } = updateSchema.validate(req.body);
+      if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+      }
 
-  //   res.status(200).json({
-  //     message: `${firstName}'s profile updated successfully`,
-  //     coder: coder,
-  //   });
-  // },
+      const { id: userId } = (req as any).user;
+
+      const coder = await CoderModel.findById(userId);
+      if (!coder) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      if (value.firstName !== undefined) coder.firstName = value.firstName;
+      if (value.lastName !== undefined) coder.lastName = value.lastName;
+      if (value.description !== undefined)
+        coder.description = value.description;
+
+      await coder.save();
+
+      res.status(200).json(coder);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  },
 };
