@@ -1,4 +1,6 @@
 import { Submission } from "../data";
+import { Code } from "./Code";
+import { Test } from "./Test";
 
 export type Challenge = {
   title: string;

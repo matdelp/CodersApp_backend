@@ -1,3 +1,5 @@
+import { Submission } from "./Submission";
+
 export type Coder = {
   firstName: string;
   lastName: string;
