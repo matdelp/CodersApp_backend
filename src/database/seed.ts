@@ -6,7 +6,7 @@ import { functionInputDefinitionModel } from "../models/FunctionInputDefinition"
 import { FunctionInputValueModel } from "../models/FunctionInputValue";
 import { ManagerModel } from "../models/Manager";
 import { SubmissionModel } from "../models/Submission";
-import { TestModel } from "../models/TestCase";
+import { TestModel } from "../models/Test";
 import { challenge, coders, managers } from "../seedData";
 
 const createCoders = async () => {
