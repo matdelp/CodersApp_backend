@@ -55,7 +55,6 @@ export const coderController = {
       });
     }
   },
-
   loginCoder: async (req: Request, res: Response) => {
     try {
       const { error, value } = loginSchema.validate(req.body);
@@ -174,18 +173,27 @@ export const coderController = {
     }
   },
 
+  getCoderProfile: async (req: Request, res: Response) => {
+    const { id: userId } = (req as any).user;
+
+    const coder = await CoderModel.findById(userId);
+
+    if (!coder) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const scores = await CoderModel.find({}, "score").sort({ score: -1 });
+    const rank =
+      scores.findIndex((c) => c._id.toString() === coder._id.toString()) + 1;
+
+    res.status(200).json({
+      ...coder.toObject(),
+      rank,
+    });
+  },
+
   //not updated yet
-  // getInfoCoder: async (req: Request, res: Response) => {
-  //   const coderId = req.params.id;
-  //   const coder = coders.find((coder) => coder._id === Number(coderId));
-
-  //   if (!coder) {
-  //     res.status(404).json({ error: "User not found" });
-  //     return;
-  //   }
-  //   res.status(200).json(coder);
-  // },
-
   // updateInfoCoder: async (req: Request, res: Response) => {
   //   const { error, value } = updateSchema.validate(req.body);
   //   if (error) {

@@ -10,7 +10,7 @@ const topkcodersSchema = Joi.object({
 export const topKCodersController = {
   getTopKCoders: async (req: Request, res: Response) => {
     try {
-      const { id: userId, role } = (req as any).user;
+      const { role } = (req as any).user;
       if (role === "manager") {
         res.status(403).json("User must be coder to see the Leaderboard");
         return;
