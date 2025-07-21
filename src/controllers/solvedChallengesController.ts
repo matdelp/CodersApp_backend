@@ -1,9 +1,7 @@
 import { Request, Response } from "express";
-import { solvedChallenges } from "../data"; //fetch from db later
 import { ChallengeModel } from "../models/Challenge";
 import { CoderModel } from "../models/Coder";
-import { Submission, SubmissionPassedWithChallengeLevel } from "../types";
-import { Types } from "mongoose";
+import { SubmissionPassedWithChallengeLevel } from "../types";
 
 export const solvedChallengesController = {
   getSolvedChallenges: async (req: Request, res: Response) => {
@@ -76,9 +74,7 @@ export const solvedChallengesController = {
         },
       });
     } catch (error: any) {
-      res.status(400).json({
-        message: error.message,
-      });
+      res.status(500).json({ message: error.message });
     }
   },
 };
