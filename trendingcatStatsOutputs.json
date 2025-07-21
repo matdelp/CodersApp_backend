@@ -1,0 +1,18 @@
+[
+  {
+    "category": "Data structure",
+    "count": 300
+  },
+  {
+    "category": "Graphs",
+    "count": 100
+  },
+  {
+    "category": "Tree",
+    "count": 5
+  },
+  {
+    "category": "Math",
+    "count": 1
+  }
+]
