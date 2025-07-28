@@ -8,7 +8,7 @@ export const coderSchema = Joi.object({
   avatar: Joi.string().uri().optional(),
   description: Joi.string().optional(),
   score: Joi.number().required(),
-  is_verified: Joi.boolean().required(),
+  is_verified: Joi.boolean(),
   submission: Joi.array().items(
     Joi.object({
       status: Joi.string().valid("passed", "failed").required(),
@@ -25,7 +25,7 @@ export const managerSchema = Joi.object({
   password: Joi.string().min(6).required(),
   avatar: Joi.string().uri().optional(),
   challenge: Joi.array(),
-  is_verified: Joi.boolean().required(),
+  is_verified: Joi.boolean(),
 });
 
 export const loginSchema = Joi.object({
