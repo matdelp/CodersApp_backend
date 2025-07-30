@@ -13,7 +13,7 @@ const yoga = createYoga({
     typeDefs: /* GraphQL */ `
       type Query {
         hello: String
-        challenges: [Challenge]
+        challenges(category: String): [Challenge]
       }
       type Challenge {
         title: String
@@ -24,8 +24,10 @@ const yoga = createYoga({
     resolvers: {
       Query: {
         hello: () => "Hello world",
-        challenges: async () => {
-          const challenges = await ChallengeModel.find();
+        challenges: async (_parent, args) => {
+          const { category } = args;
+          const filter = category ? { category } : {};
+          const challenges = await ChallengeModel.find(filter);
           return challenges;
         },
       },
