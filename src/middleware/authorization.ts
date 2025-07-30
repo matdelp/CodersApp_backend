@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 type DecodedUser = {
   id: string;
   email: string;
+  role: string;
 };
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {

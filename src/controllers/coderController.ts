@@ -213,7 +213,6 @@ export const coderController = {
       rank,
     });
   },
-
   updateProfileCoder: async (req: Request, res: Response) => {
     try {
       const { error, value } = updateSchema.validate(req.body);
