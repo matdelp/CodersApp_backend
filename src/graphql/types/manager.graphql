@@ -1,0 +1,29 @@
+type Manager {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  avatar: String
+  challenges: [Challenge!]!
+  is_verified: Boolean!
+}
+
+input CreateManagerInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  avatar: String
+  challenges: [ID!] = []
+  is_verified: Boolean!
+}
+
+input UpdateManagerInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  avatar: String
+  challenges: [ID!]
+  is_verified: Boolean
+}

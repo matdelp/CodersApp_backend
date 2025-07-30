@@ -1,0 +1,10 @@
+type Challenge {
+  title: String!
+  category: String!
+  description: String!
+  level: String!
+  code: Code,
+  test: [Test!]!
+  submission: [Submission!]!
+  },
+});
