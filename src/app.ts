@@ -10,7 +10,8 @@ import { solvedChallengesRouter } from "./routes/solvedChallengesRoute";
 import { topKCodersRouter } from "./routes/topKCodersRoute";
 import { trendingCategoriesRouter } from "./routes/trendingCategoriesRoute";
 import { verifyEmailRouter } from "./routes/verifyEmailRoute";
-dotenv.config();
+import { envLoader } from "./envLoader";
+envLoader(process.env.APP_ENV as "test" | "dev" | "prod" | null);
 
 const app = express();
 const port = process.env.PORT || 4000;
