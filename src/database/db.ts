@@ -2,7 +2,8 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import "../models/Challenge";
 import { seed } from "./seed";
-dotenv.config();
+import { envLoader } from "../envLoader";
+envLoader(process.env.APP_ENV as "test" | "dev" | "prod" | null);
 
 const uri = process.env.MONGODB_URI;
 if (!uri) throw new Error("No database defined");
