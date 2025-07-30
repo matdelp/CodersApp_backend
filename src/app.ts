@@ -14,11 +14,13 @@ const yoga = createYoga({
       type Query {
         hello: String
         challenges(category: String): [Challenge]
+        categories: [String]
       }
       type Challenge {
         title: String
         level: String
         description: String
+        category: String
       }
     `,
     resolvers: {
@@ -29,6 +31,10 @@ const yoga = createYoga({
           const filter = category ? { category } : {};
           const challenges = await ChallengeModel.find(filter);
           return challenges;
+        },
+        categories: async () => {
+          const categories = await ChallengeModel.distinct("category");
+          return categories;
         },
       },
     },
@@ -41,8 +47,8 @@ const server = createServer(yoga);
 // Wait for mongoose connection before listening
 mongoose.connection.once("open", () => {
   console.log("MongoDB connected, starting server...");
-  server.listen(3001, () => {
-    console.log("GraphQL Yoga server running at http://localhost:3001/graphql");
+  server.listen(3002, () => {
+    console.log("GraphQL Yoga server running at http://localhost:3002/graphql");
   });
 });
 
