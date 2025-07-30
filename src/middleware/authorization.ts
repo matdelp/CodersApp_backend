@@ -20,8 +20,6 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
     (req as any).user = decoded;
     next();
   } catch (error: any) {
-    res.status(403).json({
-      message: error?.message,
-    });
+    res.status(401).json({ message: error?.message || "Unauthorized" });
   }
 };

@@ -73,12 +73,13 @@ export const coderController = {
   loginCoder: async (req: Request, res: Response) => {
     try {
       const { error, value } = loginSchema.validate(req.body);
-      const { email, password } = value;
 
       if (error) {
         res.status(400).json({ error: error.details[0].message });
         return;
       }
+      const { email, password } = value;
+
       const coder = await CoderModel.findOne({ email });
       if (!coder) throw new Error("Invalid Credentials");
       if (!coder.is_verified) throw new Error("Email has not been verified");
@@ -91,8 +92,14 @@ export const coderController = {
         token: token,
       });
     } catch (error: any) {
-      res.status(400).json({
-        message: error.message,
+      const isAuthError =
+        error.message === "Invalid Credentials" ||
+        error.message === "Email has not been verified";
+
+      const statusCode = isAuthError ? 401 : 400;
+
+      res.status(statusCode).json({
+        message: error.message || "An unexpected error occurred",
       });
     }
   },

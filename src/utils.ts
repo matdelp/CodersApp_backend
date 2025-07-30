@@ -1,8 +1,6 @@
 import bcrypt from "bcrypt";
-import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
-dotenv.config();
 
 export const encryptPasword = async (password: string) => {
   const salt = await bcrypt.genSalt(10);
