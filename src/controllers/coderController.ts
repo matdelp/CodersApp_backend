@@ -5,6 +5,7 @@ import { CoderModel } from "../models/Coder";
 import { SubmissionModel } from "../models/Submission";
 import { coderSchema, loginSchema, updateSchema } from "../schema/schemaJoi";
 import { ComputePostBody } from "../types";
+
 import {
   createToken,
   createTokenForRegistration,
@@ -12,6 +13,7 @@ import {
   sendMail,
   validatePassword,
 } from "../utils";
+import { supabase } from "../service/supabaseClient/client";
 const CODE_RUNNER_URL = "https://runlang-v1.onrender.com/run";
 
 export const coderController = {
@@ -22,20 +24,33 @@ export const coderController = {
         res.status(400).json({ error: error.details[0].message });
         return;
       }
-      const { firstName, lastName, email, password, avatar, description } =
-        value;
+      const submittedFile = req.file!;
+      const { firstName, lastName, email, password, description } = value;
       const checkEmail = await CoderModel.findOne({ email });
       if (checkEmail) {
         res.status(400).json({ message: "email already used to register" });
         return;
       }
+      const { originalname, mimetype } = submittedFile;
+      const { data, error: fileError } = await supabase.storage
+        .from("avatar")
+        .upload(Date.now() + "_" + originalname, submittedFile.buffer, {
+          upsert: false,
+          contentType: mimetype,
+        });
+      if (fileError) {
+        res.status(500).json({ error: "Error uploading file" });
+        return;
+      }
+      const url = supabase.storage.from("avatar").getPublicUrl(data.path)
+        .data.publicUrl;
       const hashedPswd = await encryptPasword(password);
       const newCoder = await CoderModel.create({
         firstName,
         lastName,
         email,
         password: hashedPswd,
-        avatar,
+        avatar: url,
         description,
         score: 0,
         is_verified: false,
@@ -204,6 +219,30 @@ export const coderController = {
       const coder = await CoderModel.findById(userId);
       if (!coder) {
         return res.status(404).json({ error: "User not found" });
+      }
+
+      if (req.file) {
+        const { originalname, mimetype, buffer } = req.file;
+        const uniqueFileName = `${Date.now()}_${originalname}`;
+
+        const { data, error: fileError } = await supabase.storage
+          .from("avatars")
+          .upload(uniqueFileName, buffer, {
+            upsert: false,
+            contentType: mimetype,
+          });
+
+        if (fileError) {
+          console.error("Supabase upload error:", fileError);
+          return res
+            .status(500)
+            .json({ error: "Error uploading avatar image" });
+        }
+
+        const avatarUrl = supabase.storage
+          .from("avatars")
+          .getPublicUrl(data.path).data.publicUrl;
+        coder.avatar = avatarUrl;
       }
 
       if (value.firstName !== undefined) coder.firstName = value.firstName;
