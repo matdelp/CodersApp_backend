@@ -21,10 +21,8 @@ const schema = new Schema({
     enum: ["Easy", "Moderate", "Hard"],
     required: true,
   },
-
   code: {
-    type: [{ type: Schema.Types.ObjectId, ref: "Code" }],
-    default: {},
+    type: { type: Schema.Types.ObjectId, ref: "Code" },
   },
   test: {
     type: [{ type: Schema.Types.ObjectId, ref: "Test" }],

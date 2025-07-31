@@ -1,10 +1,15 @@
+import { createSchema, createYoga } from "graphql-yoga";
+import mongoose from "mongoose";
+import { createServer } from "node:http";
 import "./database/db";
 import { envLoader } from "./envLoader";
-import { createYoga } from "graphql-yoga";
-import { createSchema } from "graphql-yoga";
-import { createServer } from "node:http";
 import { ChallengeModel } from "./models/Challenge";
-import mongoose from "mongoose";
+import "./models/Submission";
+import "./models/Code";
+import "./models/CodeText";
+import "./models/FunctionInputDefinition";
+import "./models/FunctionInputValue";
+import "./models/Test";
 
 envLoader(process.env.APP_ENV as "test" | "dev" | "prod" | null);
 
@@ -22,10 +27,38 @@ const yoga = createYoga({
         level: String
         description: String
         category: String
+        code: Code
+        test: [Test]
+        submission: [Submission]
       }
       type Category {
         name: String!
         count: Int!
+      }
+      type Code {
+        function_name: String
+        code_text: [CodeText]
+        inputs: [FunctionInputDefinition]
+      }
+      type CodeText {
+        language: String
+        content: String
+      }
+      type FunctionInputDefinition {
+        name: String
+        type: String
+      }
+      type Test {
+        weight: Int
+        inputs: [FunctionInputValue]
+        outputs: String
+      }
+      type FunctionInputValue {
+        name: String
+        value: String
+      }
+      type Submission {
+        status: String!
       }
     `,
     resolvers: {
@@ -34,7 +67,10 @@ const yoga = createYoga({
         challenges: async (_parent, args) => {
           const { category } = args;
           const filter = category ? { category } : {};
-          const challenges = await ChallengeModel.find(filter);
+          const challenges = await ChallengeModel.find(filter).populate({
+            path: "submission",
+            select: "status",
+          });
           return challenges;
         },
         categories: async () => {
@@ -52,7 +88,20 @@ const yoga = createYoga({
         },
         oneChallenge: async (_parent, args) => {
           const { id } = args;
-          return await ChallengeModel.findById(id);
+          const challenge = await ChallengeModel.findById(id).populate([
+            {
+              path: "code",
+              populate: [{ path: "code_text" }, { path: "inputs" }],
+            },
+            {
+              path: "test",
+              populate: { path: "inputs" },
+            },
+            {
+              path: "submission",
+            },
+          ]);
+          return challenge;
         },
       },
     },

@@ -1,0 +1,24 @@
+query{oneChallenge(id:"68837cf84d4e62bb37740fc2") {
+  title
+  level
+  description
+  category
+  submission{status}
+  test{
+  weight
+  inputs {
+    name
+    value
+  }
+  outputs
+  }
+  code{
+    function_name
+    code_text {
+      language
+      content
+    } inputs{
+      name type
+    }
+  }
+}}
