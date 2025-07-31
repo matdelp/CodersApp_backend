@@ -14,7 +14,7 @@ const yoga = createYoga({
       type Query {
         hello: String
         challenges(category: String): [Challenge]
-        categories: [String]
+        categories: [Category!]
         oneChallenge(id: ID!): Challenge
       }
       type Challenge {
@@ -22,6 +22,10 @@ const yoga = createYoga({
         level: String
         description: String
         category: String
+      }
+      type Category {
+        name: String!
+        count: Int!
       }
     `,
     resolvers: {
@@ -34,8 +38,17 @@ const yoga = createYoga({
           return challenges;
         },
         categories: async () => {
-          const categories = await ChallengeModel.distinct("category");
-          return categories;
+          const allCategories = await ChallengeModel.distinct("category");
+          const categoriesWithCount = await Promise.all(
+            allCategories.map(async (name) => {
+              const count = await ChallengeModel.countDocuments({
+                category: name,
+              });
+              return { name, count };
+            })
+          );
+
+          return categoriesWithCount;
         },
         oneChallenge: async (_parent, args) => {
           const { id } = args;
