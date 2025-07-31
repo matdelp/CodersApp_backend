@@ -136,23 +136,18 @@ export const challengeController = {
     }
   },
 
-  //   getChallengeById: async (req: Request, res: Response) => {
-  //     try {
-  //       const challengeId = req.params.id;
-  //       if (!challengeId)
-  //         throw new Error(`Challenge with id ${challengeId} does not exist`);
-  //       const selectedChallenge = challenges.filter(
-  //         (challenge) => challenge._id === parseInt(challengeId)
-  //       );
-  //       res.status(200).json(selectedChallenge);
-  //       return;
-  //     } catch (error: any) {
-  //       res.status(400).json({
-  //         message: error.message,
-  //       });
-  //     }
-  //   },
-
+  getChallengeById: async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const challenge = await ChallengeModel.findById(id)
+      .populate([
+        { path: "code", populate: [{ path: "code_text" }, { path: "inputs" }] },
+        { path: "test", populate: { path: "inputs" } },
+        { path: "submission" },
+      ])
+      .exec();
+    if (!challenge) throw new Error("Challenge not found");
+    res.status(200).json(challenge);
+  },
   getAllCategories: async (req: Request, res: Response) => {
     try {
       const categories = await ChallengeModel.distinct("category");

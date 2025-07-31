@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 
 const DOCUMENT_NAME = "Test";
-const COLLECTION_NAME = "test";
+const COLLECTION_NAME = "testCase";
 
 const schema = new Schema({
   weight: {
