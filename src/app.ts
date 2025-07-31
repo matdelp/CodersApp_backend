@@ -65,8 +65,8 @@ const server = createServer(yoga);
 // Wait for mongoose connection before listening
 mongoose.connection.once("open", () => {
   console.log("MongoDB connected, starting server...");
-  server.listen(3003, () => {
-    console.log("GraphQL Yoga server running at http://localhost:3003/graphql");
+  server.listen(3000, () => {
+    console.log("GraphQL Yoga server running at http://localhost:3000/graphql");
   });
 });
 
