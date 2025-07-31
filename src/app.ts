@@ -49,7 +49,7 @@ const yoga = createYoga({
         type: String
       }
       type Test {
-        weight: Int
+        weight: Float
         inputs: [FunctionInputValue]
         outputs: String
       }
