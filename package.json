@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "env:dev": "cross-env APP_ENV=dev nodemon src/server.ts",
+    "env:dev": "cross-env APP_ENV=dev nodemon --exec ts-node src/server.ts",
     "env:start": "cross-env APP_ENV=prod node dist/server.js",
     "env:test": "cross-env APP_ENV=test ts-node src/server.ts",
     "test": "jest"
