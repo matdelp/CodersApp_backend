@@ -1,128 +1,34 @@
-import { createSchema, createYoga } from "graphql-yoga";
-import mongoose from "mongoose";
-import { createServer } from "node:http";
+import express from "express";
 import "./database/db";
+import { challengeRouter } from "./routes/challengeRoute";
+import { coderRouter } from "./routes/codersRoute";
+import { heatmapRouter } from "./routes/heatmapRoute";
+import { leaderboardRouter } from "./routes/leaderboardRoute";
+import { managerRouter } from "./routes/managerRoute";
+import { solvedChallengesRouter } from "./routes/solvedChallengesRoute";
+import { topKCodersRouter } from "./routes/topKCodersRoute";
+import { trendingCategoriesRouter } from "./routes/trendingCategoriesRoute";
+import { verifyEmailRouter } from "./routes/verifyEmailRoute";
 import { envLoader } from "./envLoader";
-import { ChallengeModel } from "./models/Challenge";
-import "./models/Submission";
-import "./models/Code";
-import "./models/CodeText";
-import "./models/FunctionInputDefinition";
-import "./models/FunctionInputValue";
-import "./models/Test";
-
 envLoader(process.env.APP_ENV as "test" | "dev" | "prod" | null);
 
-const yoga = createYoga({
-  schema: createSchema({
-    typeDefs: /* GraphQL */ `
-      type Query {
-        hello: String
-        challenges(category: String): [Challenge]
-        categories: [Category!]
-        oneChallenge(id: ID!): Challenge
-      }
-      type Challenge {
-        title: String
-        level: String
-        description: String
-        category: String
-        code: Code
-        test: [Test]
-        submission: [Submission]
-      }
-      type Category {
-        name: String!
-        count: Int!
-      }
-      type Code {
-        function_name: String
-        code_text: [CodeText]
-        inputs: [FunctionInputDefinition]
-      }
-      type CodeText {
-        language: String
-        content: String
-      }
-      type FunctionInputDefinition {
-        name: String
-        type: String
-      }
-      type Test {
-        weight: Float
-        inputs: [FunctionInputValue]
-        outputs: String
-      }
-      type FunctionInputValue {
-        name: String
-        value: String
-      }
-      type Submission {
-        status: String!
-        lang: String
-        code: String
-        challenge_id: ID
-        coder_id: ID
-      }
-    `,
-    resolvers: {
-      Query: {
-        hello: () => "Hello world",
-        challenges: async (_parent, args) => {
-          const { category } = args;
-          const filter = category ? { category } : {};
-          const challenges = await ChallengeModel.find(filter).populate({
-            path: "submission",
-            select: "status",
-          });
-          return challenges;
-        },
-        categories: async () => {
-          const allCategories = await ChallengeModel.distinct("category");
-          const categoriesWithCount = await Promise.all(
-            allCategories.map(async (name) => {
-              const count = await ChallengeModel.countDocuments({
-                category: name,
-              });
-              return { name, count };
-            })
-          );
+const app = express();
+const port = process.env.PORT || 4000;
 
-          return categoriesWithCount;
-        },
-        oneChallenge: async (_parent, args) => {
-          const { id } = args;
-          const challenge = await ChallengeModel.findById(id).populate([
-            {
-              path: "code",
-              populate: [{ path: "code_text" }, { path: "inputs" }],
-            },
-            {
-              path: "test",
-              populate: { path: "inputs" },
-            },
-            {
-              path: "submission",
-            },
-          ]);
-          return challenge;
-        },
-      },
-    },
-  }),
-  graphqlEndpoint: "/graphql",
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/coders", coderRouter);
+app.use("/managers", managerRouter);
+app.use("/challenges", challengeRouter);
+app.use("/leaderboard", leaderboardRouter);
+app.use("/topkcoders", topKCodersRouter);
+app.use("/solvedchallenges", solvedChallengesRouter);
+app.use("/trendingcategories", trendingCategoriesRouter);
+app.use("/heatmap", heatmapRouter);
+app.use("/api", verifyEmailRouter);
+
+app.get("/", (req, res) => {
+  res.send("Hello world");
 });
 
-const server = createServer(yoga);
-
-// Wait for mongoose connection before listening
-mongoose.connection.once("open", () => {
-  console.log("MongoDB connected, starting server...");
-  server.listen(3000, () => {
-    console.log("GraphQL Yoga server running at http://localhost:3000/graphql");
-  });
-});
-
-mongoose.connection.on("error", (err) => {
-  console.error("MongoDB connection error:", err);
-});
+export default app;
