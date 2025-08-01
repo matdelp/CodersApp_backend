@@ -59,6 +59,10 @@ const yoga = createYoga({
       }
       type Submission {
         status: String!
+        lang: String
+        code: String
+        challenge_id: ID
+        coder_id: ID
       }
     `,
     resolvers: {

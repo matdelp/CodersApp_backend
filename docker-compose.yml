@@ -1,0 +1,37 @@
+services:
+  mongo:
+    image: mongo:7.0
+    container_name: mongo-container
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: myappdb
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: express-container
+    ports:
+      - "${PORT}:3000" # Set PORT in your .env, e.g. PORT=3000
+    depends_on:
+      - mongo
+    environment:
+      PORT: "3000"
+      DB_URL: ${MONGODB_URI} # Your MongoDB connection string
+      JWT_SECRET: ${JWT_SECRET}
+      APP_ENV: "prod"
+    networks:
+      - app-network
+    restart: unless-stopped
+    command: npm run env:start # Run compiled server.js
+
+volumes:
+  mongo-data:
+
+networks:
+  app-network:

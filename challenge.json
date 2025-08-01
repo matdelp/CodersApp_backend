@@ -1,113 +1,113 @@
 [
-    {
-        "title": "fibonacci",
-        "category": "Math",
-        "description": "### Problem Statement:\nCompute the nth Fibonacci number. The Fibonacci sequence is defined as follows: `F(0) = 0`, `F(1) = 1`, and `F(n) = F(n-1) + F(n-2)` for `n > 1`.\n\n### Example:\nFor example, the 6th Fibonacci number is `F(6) = 8`.\n\n### Constraints:\n- The input `n` is a non-negative integer.\n- `0 <= n <= 30`.\n\n### Approach:\nA simple approach is to use recursion. Define a function `fibonacci(n)` that returns the nth Fibonacci number. The base cases are when `n` is `0` or `1`.\n\n### Implementation:\nDefine a recursive function `fibonacci(n)` that handles the base cases and recursively computes the sum of the previous two Fibonacci numbers.",
-        "level": "Medium",
-        "code": {
-            "function_name": "fibonacci",
-            "code_text": [
-                {
-                    "language": "py",
-                    "text": "def fibonacci(n):\n    return 0"
-                },
-                {
-                    "language": "js",
-                    "text": "function fibonacci(n) {\n    return 0;\n}"
-                }
-            ],
-            "inputs": [
-                {
-                    "name": "n",
-                    "type": "number"
-                }
-            ]
+  {
+    "title": "fibonacci",
+    "category": "Math",
+    "description": "### Problem Statement:\nCompute the nth Fibonacci number. The Fibonacci sequence is defined as follows: `F(0) = 0`, `F(1) = 1`, and `F(n) = F(n-1) + F(n-2)` for `n > 1`.\n\n### Example:\nFor example, the 6th Fibonacci number is `F(6) = 8`.\n\n### Constraints:\n- The input `n` is a non-negative integer.\n- `0 <= n <= 30`.\n\n### Approach:\nA simple approach is to use recursion. Define a function `fibonacci(n)` that returns the nth Fibonacci number. The base cases are when `n` is `0` or `1`.\n\n### Implementation:\nDefine a recursive function `fibonacci(n)` that handles the base cases and recursively computes the sum of the previous two Fibonacci numbers.",
+    "level": "Medium",
+    "code": {
+      "function_name": "fibonacci",
+      "code_text": [
+        {
+          "language": "py",
+          "text": "def fibonacci(n):\n    return 0"
         },
-        "tests": [
-            {
-                "weight": 0.8,
-                "inputs": [
-                    {
-                        "name": "n",
-                        "value": "6"
-                    }
-                ],
-                "output": "8"
-            }
-        ]
+        {
+          "language": "js",
+          "text": "function fibonacci(n) {\n    return 0;\n}"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "n",
+          "type": "number"
+        }
+      ]
     },
-    {
-        "title": "is_prime",
-        "category": "Math",
-        "description": "### Problem Statement:\nDetermine if a given integer `n` is a prime number. A prime number is a number greater than 1 that has no positive divisors other than 1 and itself.\n\n### Example:\nFor example, `7` is prime, but `8` is not.\n\n### Constraints:\n- The input `n` is an integer.\n- `2 <= n <= 1000`.\n\n### Approach:\nCheck if `n` is divisible by any integer from `2` to `sqrt(n)`. If it is, then `n` is not prime.\n\n### Implementation:\nDefine a function `is_prime(n)` that returns `True` if `n` is prime, otherwise `False`.",
-        "level": "Easy",
-        "code": {
-            "function_name": "is_prime",
-            "code_text": [
-                {
-                    "language": "py",
-                    "text": "def is_prime(n):\n    return False"
-                },
-                {
-                    "language": "js",
-                    "text": "function is_prime(n) {\n    return false;\n}"
-                }
-            ],
-            "inputs": [
-                {
-                    "name": "n",
-                    "type": "number"
-                }
-            ]
+    "test": [
+      {
+        "weight": 0.8,
+        "inputs": [
+          {
+            "name": "n",
+            "value": "6"
+          }
+        ],
+        "outputs": "8"
+      }
+    ]
+  },
+  {
+    "title": "is_prime",
+    "category": "Math",
+    "description": "### Problem Statement:\nDetermine if a given integer `n` is a prime number. A prime number is a number greater than 1 that has no positive divisors other than 1 and itself.\n\n### Example:\nFor example, `7` is prime, but `8` is not.\n\n### Constraints:\n- The input `n` is an integer.\n- `2 <= n <= 1000`.\n\n### Approach:\nCheck if `n` is divisible by any integer from `2` to `sqrt(n)`. If it is, then `n` is not prime.\n\n### Implementation:\nDefine a function `is_prime(n)` that returns `True` if `n` is prime, otherwise `False`.",
+    "level": "Easy",
+    "code": {
+      "function_name": "is_prime",
+      "code_text": [
+        {
+          "language": "py",
+          "text": "def is_prime(n):\n    return False"
         },
-        "tests": [
-            {
-                "weight": 0.8,
-                "inputs": [
-                    {
-                        "name": "n",
-                        "value": 7
-                    }
-                ],
-                "output": true
-            }
-        ]
+        {
+          "language": "js",
+          "text": "function is_prime(n) {\n    return false;\n}"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "n",
+          "type": "number"
+        }
+      ]
     },
-    {
-        "title": "reverse_string",
-        "category": "String",
-        "description": "### Problem Statement:\nReverse a given string `s`.\n\n### Example:\nFor example, the reverse of `\"hello\"` is `\"olleh\"`.\n\n### Constraints:\n- The input `s` is a string.\n- `1 <= len(s) <= 100`.\n\n### Approach:\nConvert the string to a list, reverse it, and join it back to a string.\n\n### Implementation:\nDefine a function `reverse_string(s)` that returns the reversed string.",
-        "level": "Easy",
-        "code": {
-            "function_name": "reverse_string",
-            "code_text": [
-                {
-                    "language": "py",
-                    "text": "def reverse_string(s):\n    return \"\""
-                },
-                {
-                    "language": "js",
-                    "text": "function reverse_string(s) {\n    return \"\";\n}"
-                }
-            ],
-            "inputs": [
-                {
-                    "name": "s",
-                    "type": "string"
-                }
-            ]
+    "tests": [
+      {
+        "weight": 0.8,
+        "inputs": [
+          {
+            "name": "n",
+            "value": 7
+          }
+        ],
+        "output": true
+      }
+    ]
+  },
+  {
+    "title": "reverse_string",
+    "category": "String",
+    "description": "### Problem Statement:\nReverse a given string `s`.\n\n### Example:\nFor example, the reverse of `\"hello\"` is `\"olleh\"`.\n\n### Constraints:\n- The input `s` is a string.\n- `1 <= len(s) <= 100`.\n\n### Approach:\nConvert the string to a list, reverse it, and join it back to a string.\n\n### Implementation:\nDefine a function `reverse_string(s)` that returns the reversed string.",
+    "level": "Easy",
+    "code": {
+      "function_name": "reverse_string",
+      "code_text": [
+        {
+          "language": "py",
+          "text": "def reverse_string(s):\n    return \"\""
         },
-        "tests": [
-            {
-                "weight": 0.8,
-                "inputs": [
-                    {
-                        "name": "s",
-                        "value": "hello"
-                    }
-                ],
-                "output": "olleh"
-            }
-        ]
-    }
+        {
+          "language": "js",
+          "text": "function reverse_string(s) {\n    return \"\";\n}"
+        }
+      ],
+      "inputs": [
+        {
+          "name": "s",
+          "type": "string"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "weight": 0.8,
+        "inputs": [
+          {
+            "name": "s",
+            "value": "hello"
+          }
+        ],
+        "output": "olleh"
+      }
+    ]
+  }
 ]

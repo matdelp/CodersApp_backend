@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "env:dev": "cross-env APP_ENV=dev nodemon --exec ts-node src/app.ts",
+    "env:dev": "cross-env APP_ENV=dev nodemon --exec ts-node src/server.ts",
     "env:start": "cross-env APP_ENV=prod node dist/server.js",
     "env:test": "cross-env APP_ENV=test ts-node src/server.ts",
+    "build": "tsc",
     "test": "jest"
   },
   "repository": {
@@ -30,7 +31,6 @@
     "@types/supertest": "^6.0.3",
     "axios": "^1.10.0",
     "bcrypt": "^6.0.0",
-    "cros": "^1.1.0",
     "cross-env": "^10.0.0",
     "dotenv": "^16.6.0",
     "express": "^4.21.2",
