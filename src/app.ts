@@ -28,7 +28,7 @@ app.use("/heatmap", heatmapRouter);
 app.use("/api", verifyEmailRouter);
 
 app.get("/", (req, res) => {
-  res.send("Hello world");
+  res.send("API is running");
 });
 
 export default app;
