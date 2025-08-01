@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import "../models/Challenge";
-import { seed } from "./seed";
 import { envLoader } from "../envLoader";
 envLoader(process.env.APP_ENV as "test" | "dev" | "prod" | null);
 
