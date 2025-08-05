@@ -41,7 +41,7 @@ This project emphasizes route/controller/service architecture with **Joi-based r
 - **Node.js** + **Express.js**
 - **Joi** – schema-based request validation
 - **MongoDB** (shared database, assumed for later implementation)
-- **JavaScript (ES6)**
+- **TypeScript**
 
 ---
 Author
